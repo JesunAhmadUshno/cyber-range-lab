@@ -2,7 +2,7 @@
 
 A working cyber range on an isolated lab network. Defense first: hardening, logging, detection, response. Offensive scenarios run only inside the isolation and only on Jesun's sign-off. This scaffold holds the defensive Learn scope and the isolation rules only.
 
-Status: SCAFFOLD (Wave 0, ROADMAP-V3-BATCH, 2026-11-04). Scaffold is not built. No results exist yet.
+Status: Learn DONE (2026-11-05, ROADMAP-V3-BATCH). Level 1 is built, tested, and measured below. Defensive scope only; the snapshot is synthetic teaching data, not a live R610 capture. Build and Deep are not started and stay gated.
 Project: P24. Fleet node: Dell R610. Wave: Wave 5 (after P13).
 
 ## Start here
@@ -20,9 +20,16 @@ Project: P24. Fleet node: Dell R610. Wave: Wave 5 (after P13).
 
 ## Benchmarks
 
+Measured 2026-11-05 with level-1-learn/run_learn.py on the Muse VM, Python 3.12. The snapshots are synthetic teaching data, not a live machine.
+
 | Test | Result |
 | --- | --- |
-| NO RESULTS YET | No measurement has run. This table fills only with measured numbers, with method. |
+| Hardening controls | 10 controls (C01 to C10) |
+| Before snapshot | 0 of 10 controls passed (0 percent) |
+| After snapshot | 10 of 10 controls passed (100 percent) |
+| Improvement | Plus 10 controls, before to after |
+| Unit tests | 22 passed, plus the scaffold smoke test |
+| Determinism | results_learn.json identical across two runs (hash verified) |
 
 ## Novelty
 
