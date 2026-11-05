@@ -1,0 +1,1 @@
+{"admin_users":["labadmin","laboperator"],"baseline_ports":[22,9090],"dedup_window_seconds":600,"failed_login_threshold":5,"failed_login_window_seconds":600}
