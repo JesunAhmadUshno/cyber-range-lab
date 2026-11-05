@@ -1,8 +1,8 @@
 # cyber-range-lab
 
-A working cyber range on an isolated lab network. Defense first: hardening, logging, detection, response. Offensive scenarios run only inside the isolation and only on Jesun's sign-off. This scaffold holds the defensive Learn scope and the isolation rules only.
+A working cyber range on an isolated lab network. Defense first: hardening, logging, detection, response. Offensive scenarios run only inside the isolation and only on Jesun's sign-off. It holds the defensive Learn, Build, and compressed Deep scope and the isolation rules.
 
-Status: Build DONE (2026-11-05, ROADMAP-V3-BATCH). Learn and Build are built, tested, and measured below. Defensive scope only; all data is synthetic teaching data, not a live R610 capture. Deep is not started and stays gated; any scenario content needs Jesun's sign-off.
+Status: v1.0 SHIPPED (2026-11-05, ROADMAP-V3-BATCH). Learn, Build, and compressed Deep are built, tested, and measured below. Defensive scope only; all data is synthetic teaching data, not a live R610 capture. Any scenario content stays held and needs Jesun's sign-off; none is drafted.
 Project: P24. Fleet node: Dell R610. Wave: Wave 5 (after P13).
 
 ## Start here
@@ -16,7 +16,7 @@ Project: P24. Fleet node: Dell R610. Wave: Wave 5 (after P13).
 
 - Level 1, Learn: DONE. A 10-control hardening baseline checker over synthetic before and after lab VM snapshots.
 - Level 2, Build: DONE. A defensive detection loop end to end on synthetic logs: 4 sources to one central record list, 4 named rules, deduplicated alerts, and one incident record.
-- Level 3, Deep: not started, gated. Further work needs Jesun's sign-off for any scenario content; the defensive runbook extension is the named next scope.
+- Level 3, Deep: DONE (compressed Deep). The range runbook plus the detection loop hardened: configurable thresholds, baseline drift rule R5 reusing the Learn checker, and an incident lifecycle with a closure checklist.
 
 ## Benchmarks
 
@@ -43,6 +43,20 @@ Measured 2026-11-05 with level-2-build/run_build.py on the Muse VM, Python 3.12.
 | Incident records | 1 (INC-001, opened 2026-11-05T10:08:00Z, high severity) |
 | Unit tests | 48 passed in total (22 Learn, 26 Build), plus the scaffold smoke test |
 | Determinism | results_build.json identical across two runs (hash verified) |
+
+Measured 2026-11-05 with level-3-deep/run_deep.py on the Muse VM, Python 3.12. The logs and snapshots are synthetic teaching data, not a live machine.
+
+| Test | Result |
+| --- | --- |
+| Log lines, 4 sources | 26 lines |
+| Parsed records, quarantined | 24 parsed, 2 quarantined |
+| Rule firings before dedup (R1 2, R2 2, R3 1, R4 2, R5 2) | 9 |
+| Alerts after dedup | 5 |
+| Baseline drift | 2 controls (C01, C07); current snapshot 8 of 10 against baseline 10 of 10 |
+| Incident | INC-001, lifecycle closed, 4 logged transitions, closure checklist 4 of 4 |
+| Unit tests | 71 passed in total (22 Learn, 26 Build, 23 Deep), plus the scaffold smoke test |
+| Determinism | results_deep.json identical across two runs (hash verified) |
+| Deep grade | 8,400 of 10,000 (deductions in level-3-deep/README.md) |
 
 ## Novelty
 
