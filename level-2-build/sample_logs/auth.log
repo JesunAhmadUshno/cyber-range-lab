@@ -1,0 +1,12 @@
+2026-11-05T10:00:00Z lab-vm-01 sshd[101]: Failed password for alice from 10.99.0.10 port 22
+2026-11-05T10:02:00Z lab-vm-01 sshd[102]: Failed password for alice from 10.99.0.10 port 22
+2026-11-05T10:04:00Z lab-vm-01 sshd[103]: Failed password for alice from 10.99.0.10 port 22
+2026-11-05T10:06:00Z lab-vm-01 sshd[104]: Failed password for alice from 10.99.0.10 port 22
+2026-11-05T10:08:00Z lab-vm-01 sshd[105]: Failed password for alice from 10.99.0.10 port 22
+2026-11-05T10:09:00Z lab-vm-01 sshd[106]: Failed password for alice from 10.99.0.10 port 22
+2026-11-05T10:20:00Z lab-vm-01 sshd[107]: Failed password for bob from 10.99.0.11 port 22
+2026-11-05T10:22:00Z lab-vm-01 sshd[108]: Failed password for bob from 10.99.0.11 port 22
+2026-11-05T10:24:00Z lab-vm-01 sshd[109]: Failed password for bob from 10.99.0.11 port 22
+2026-11-05T10:26:00Z lab-vm-01 sshd[110]: Failed password for bob from 10.99.0.11 port 22
+2026-11-05T10:30:00Z lab-vm-01 sshd[111]: Accepted password for labadmin from 10.99.0.12 port 22
+this line is not a valid auth log line
