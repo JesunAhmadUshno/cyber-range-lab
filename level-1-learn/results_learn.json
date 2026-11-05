@@ -1,0 +1,149 @@
+{
+  "after": {
+    "controls": [
+      {
+        "control": "automatic_updates_on",
+        "control_id": "C01",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "password_ssh_off",
+        "control_id": "C02",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "key_only_access",
+        "control_id": "C03",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "root_login_disabled",
+        "control_id": "C04",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "sudo_list_bounded",
+        "control_id": "C05",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "logging_and_audit_on",
+        "control_id": "C06",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "firewall_default_deny",
+        "control_id": "C07",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "labnet_isolated",
+        "control_id": "C08",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "unused_services_off",
+        "control_id": "C09",
+        "passed": true,
+        "remediation": ""
+      },
+      {
+        "control": "backup_snapshot_present",
+        "control_id": "C10",
+        "passed": true,
+        "remediation": ""
+      }
+    ],
+    "label": "synthetic lab VM, after hardening",
+    "passed": 10,
+    "score_percent": 100,
+    "synthetic": true,
+    "total": 10
+  },
+  "before": {
+    "controls": [
+      {
+        "control": "automatic_updates_on",
+        "control_id": "C01",
+        "passed": false,
+        "remediation": "Enable automatic security updates for the lab VM."
+      },
+      {
+        "control": "password_ssh_off",
+        "control_id": "C02",
+        "passed": false,
+        "remediation": "Set SSH password authentication to off in the lab VM configuration."
+      },
+      {
+        "control": "key_only_access",
+        "control_id": "C03",
+        "passed": false,
+        "remediation": "Enable public key authentication, add an authorized key for each named lab user, and keep password authentication off."
+      },
+      {
+        "control": "root_login_disabled",
+        "control_id": "C04",
+        "passed": false,
+        "remediation": "Set SSH permit root login to no; use a named account with sudo instead."
+      },
+      {
+        "control": "sudo_list_bounded",
+        "control_id": "C05",
+        "passed": false,
+        "remediation": "Trim the sudo list to at most 2 named allowed lab users and remove every other entry."
+      },
+      {
+        "control": "logging_and_audit_on",
+        "control_id": "C06",
+        "passed": false,
+        "remediation": "Turn on the system log and the audit service for the lab VM."
+      },
+      {
+        "control": "firewall_default_deny",
+        "control_id": "C07",
+        "passed": false,
+        "remediation": "Set the inbound firewall default to deny and allow only the named lab ports (22)."
+      },
+      {
+        "control": "labnet_isolated",
+        "control_id": "C08",
+        "passed": false,
+        "remediation": "Keep the lab VM on labnet 10.99.0.0/24 with no route to the home LAN and no route to management interfaces, as configuration fields."
+      },
+      {
+        "control": "unused_services_off",
+        "control_id": "C09",
+        "passed": false,
+        "remediation": "Disable unused services (ftp, rsh, telnet) on the lab VM."
+      },
+      {
+        "control": "backup_snapshot_present",
+        "control_id": "C10",
+        "passed": false,
+        "remediation": "Take a named snapshot of the hardened lab VM and record its id."
+      }
+    ],
+    "label": "synthetic lab VM, before hardening",
+    "passed": 0,
+    "score_percent": 0,
+    "synthetic": true,
+    "total": 10
+  },
+  "scenario": "hardening baseline on one synthetic lab VM snapshot, 10 controls, defensive scope only",
+  "summary": {
+    "after_passed": 10,
+    "after_score_percent": 100,
+    "before_passed": 0,
+    "before_score_percent": 0,
+    "controls_total": 10,
+    "improvement": 10
+  }
+}
