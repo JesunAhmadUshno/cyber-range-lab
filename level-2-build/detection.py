@@ -246,7 +246,8 @@ def deduplicate(firings):
 
 RESPONSE_STEPS = [
     "Review the affected accounts and confirm each login and sudo use with the account owner.",
-    "Check the host listening ports against the baseline ports 22 and 9090 and remove any service that is not approved.",
+    "Check the host listening ports against the baseline ports 22 and 9090 and remove "
+    "any service that is not approved.",
     "Re-enable automatic updates and confirm the update service reports status enabled.",
     "Keep the incident open until a reviewer confirms the signals are explained, then record the closure note.",
 ]
