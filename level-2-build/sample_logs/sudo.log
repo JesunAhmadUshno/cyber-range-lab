@@ -1,0 +1,5 @@
+2026-11-05T10:15:00Z lab-vm-01 sudo: guest : TTY=pts/0 ; PWD=/home/guest ; USER=root ; COMMAND=/bin/cat /etc/shadow
+2026-11-05T10:17:00Z lab-vm-01 sudo: guest : TTY=pts/0 ; PWD=/home/guest ; USER=root ; COMMAND=/bin/systemctl status
+2026-11-05T10:20:00Z lab-vm-01 sudo: labadmin : TTY=pts/1 ; PWD=/home/labadmin ; USER=root ; COMMAND=/bin/systemctl restart auditd
+2026-11-05T10:21:00Z lab-vm-01 sudo: laboperator : TTY=pts/2 ; PWD=/home/laboperator ; USER=root ; COMMAND=/bin/journalctl -n 20
+garbage sudo line with no structure

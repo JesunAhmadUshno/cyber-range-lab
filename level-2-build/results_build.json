@@ -1,0 +1,318 @@
+{
+  "alerts": [
+    {
+      "alert_id": "A001",
+      "count": 2,
+      "detail": "5 failed logins in 10 minutes",
+      "first_seen": "2026-11-05T10:08:00Z",
+      "host": "lab-vm-01",
+      "last_seen": "2026-11-05T10:09:00Z",
+      "rule": "R1",
+      "rule_name": "repeated_failed_logins",
+      "severity": "high",
+      "user": "alice"
+    },
+    {
+      "alert_id": "A002",
+      "count": 2,
+      "detail": "sudo to root by non-admin user guest",
+      "first_seen": "2026-11-05T10:15:00Z",
+      "host": "lab-vm-01",
+      "last_seen": "2026-11-05T10:17:00Z",
+      "rule": "R2",
+      "rule_name": "sudo_by_non_admin_user",
+      "severity": "high",
+      "user": "guest"
+    },
+    {
+      "alert_id": "A003",
+      "count": 2,
+      "detail": "automatic_updates status=disabled",
+      "first_seen": "2026-11-05T10:30:00Z",
+      "host": "lab-vm-01",
+      "last_seen": "2026-11-05T10:32:00Z",
+      "rule": "R4",
+      "rule_name": "automatic_updates_disabled",
+      "severity": "medium",
+      "user": "system"
+    },
+    {
+      "alert_id": "A004",
+      "count": 1,
+      "detail": "listening port 8080 not in baseline",
+      "first_seen": "2026-11-05T10:35:00Z",
+      "host": "lab-vm-01",
+      "last_seen": "2026-11-05T10:35:00Z",
+      "rule": "R3",
+      "rule_name": "new_listening_port_not_in_baseline",
+      "severity": "medium",
+      "user": "system"
+    }
+  ],
+  "alerts_total_after_dedup": 4,
+  "firings_total_before_dedup": 7,
+  "incident": {
+    "affected_hosts": [
+      "lab-vm-01"
+    ],
+    "affected_users": [
+      "alice",
+      "guest"
+    ],
+    "alert_ids": [
+      "A001",
+      "A002"
+    ],
+    "incident_id": "INC-001",
+    "opened_at": "2026-11-05T10:08:00Z",
+    "recommended_response": [
+      "Review the affected accounts and confirm each login and sudo use with the account owner.",
+      "Check the host listening ports against the baseline ports 22 and 9090 and remove any service that is not approved.",
+      "Re-enable automatic updates and confirm the update service reports status enabled.",
+      "Keep the incident open until a reviewer confirms the signals are explained, then record the closure note."
+    ],
+    "severity": "high",
+    "status": "open"
+  },
+  "per_rule": {
+    "R1": {
+      "alerts_after_dedup": 1,
+      "firings_before_dedup": 2
+    },
+    "R2": {
+      "alerts_after_dedup": 1,
+      "firings_before_dedup": 2
+    },
+    "R3": {
+      "alerts_after_dedup": 1,
+      "firings_before_dedup": 1
+    },
+    "R4": {
+      "alerts_after_dedup": 1,
+      "firings_before_dedup": 2
+    }
+  },
+  "records": [
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:00:00Z",
+      "user": "alice"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:02:00Z",
+      "user": "alice"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:04:00Z",
+      "user": "alice"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:06:00Z",
+      "user": "alice"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:08:00Z",
+      "user": "alice"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:09:00Z",
+      "user": "alice"
+    },
+    {
+      "detail": "sudo target=root",
+      "event": "sudo_to_root",
+      "host": "lab-vm-01",
+      "source": "sudo",
+      "ts": "2026-11-05T10:15:00Z",
+      "user": "guest"
+    },
+    {
+      "detail": "sudo target=root",
+      "event": "sudo_to_root",
+      "host": "lab-vm-01",
+      "source": "sudo",
+      "ts": "2026-11-05T10:17:00Z",
+      "user": "guest"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:20:00Z",
+      "user": "bob"
+    },
+    {
+      "detail": "sudo target=root",
+      "event": "sudo_to_root",
+      "host": "lab-vm-01",
+      "source": "sudo",
+      "ts": "2026-11-05T10:20:00Z",
+      "user": "labadmin"
+    },
+    {
+      "detail": "sudo target=root",
+      "event": "sudo_to_root",
+      "host": "lab-vm-01",
+      "source": "sudo",
+      "ts": "2026-11-05T10:21:00Z",
+      "user": "laboperator"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:22:00Z",
+      "user": "bob"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:24:00Z",
+      "user": "bob"
+    },
+    {
+      "detail": "ssh password login failed",
+      "event": "failed_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:26:00Z",
+      "user": "bob"
+    },
+    {
+      "detail": "ssh password login accepted",
+      "event": "successful_login",
+      "host": "lab-vm-01",
+      "source": "auth",
+      "ts": "2026-11-05T10:30:00Z",
+      "user": "labadmin"
+    },
+    {
+      "detail": "status=disabled",
+      "event": "automatic_updates_status",
+      "host": "lab-vm-01",
+      "source": "service",
+      "ts": "2026-11-05T10:30:00Z",
+      "user": "system"
+    },
+    {
+      "detail": "status=disabled",
+      "event": "automatic_updates_status",
+      "host": "lab-vm-01",
+      "source": "service",
+      "ts": "2026-11-05T10:32:00Z",
+      "user": "system"
+    },
+    {
+      "detail": "port=8080 protocol=tcp",
+      "event": "listening_port",
+      "host": "lab-vm-01",
+      "source": "service",
+      "ts": "2026-11-05T10:35:00Z",
+      "user": "system"
+    },
+    {
+      "detail": "port=9090 protocol=tcp",
+      "event": "listening_port",
+      "host": "lab-vm-01",
+      "source": "service",
+      "ts": "2026-11-05T10:36:00Z",
+      "user": "system"
+    },
+    {
+      "detail": "port=22 protocol=tcp",
+      "event": "listening_port",
+      "host": "lab-vm-01",
+      "source": "service",
+      "ts": "2026-11-05T10:37:00Z",
+      "user": "system"
+    },
+    {
+      "detail": "service=daily-cleanup.service",
+      "event": "service_started",
+      "host": "lab-vm-01",
+      "source": "service",
+      "ts": "2026-11-05T10:40:00Z",
+      "user": "system"
+    },
+    {
+      "detail": "port=22",
+      "event": "firewall_allow",
+      "host": "lab-vm-01",
+      "source": "firewall",
+      "ts": "2026-11-05T10:50:00Z",
+      "user": "system"
+    },
+    {
+      "detail": "port=3389",
+      "event": "firewall_deny",
+      "host": "lab-vm-01",
+      "source": "firewall",
+      "ts": "2026-11-05T10:51:00Z",
+      "user": "system"
+    },
+    {
+      "detail": "port=9090",
+      "event": "firewall_allow",
+      "host": "lab-vm-01",
+      "source": "firewall",
+      "ts": "2026-11-05T10:52:00Z",
+      "user": "system"
+    }
+  ],
+  "scenario": "defensive detection loop on synthetic log data, 4 sources, 4 rules, defensive scope only",
+  "sources": {
+    "auth": {
+      "lines": 12,
+      "parsed": 11,
+      "quarantined": 1
+    },
+    "firewall": {
+      "lines": 3,
+      "parsed": 3,
+      "quarantined": 0
+    },
+    "service": {
+      "lines": 6,
+      "parsed": 6,
+      "quarantined": 0
+    },
+    "sudo": {
+      "lines": 5,
+      "parsed": 4,
+      "quarantined": 1
+    },
+    "total": {
+      "lines": 26,
+      "parsed": 24,
+      "quarantined": 2
+    }
+  },
+  "synthetic": true
+}
