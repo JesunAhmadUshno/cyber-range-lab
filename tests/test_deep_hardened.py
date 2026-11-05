@@ -19,13 +19,18 @@ BUILD = os.path.join(ROOT, "level-2-build")
 LEARN = os.path.join(ROOT, "level-1-learn")
 sys.path.insert(0, DEEP)
 sys.path.insert(0, BUILD)
-from detection_hardened import (  # noqa: E402
-    DEFAULT_CONFIG, DetectionConfigError, IncidentError,
-    baseline_drift, new_incident, run_rules_configured,
-    transition, validate_config,
-)
 import run_build  # noqa: E402
 import run_deep as run_deep_module  # noqa: E402
+from detection_hardened import (  # noqa: E402
+    DEFAULT_CONFIG,
+    DetectionConfigError,
+    IncidentError,
+    baseline_drift,
+    new_incident,
+    run_rules_configured,
+    transition,
+    validate_config,
+)
 from detection_hardened import run_deep as run_deep_fn  # noqa: E402
 
 

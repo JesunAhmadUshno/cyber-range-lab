@@ -128,7 +128,8 @@ CONTROLS = [
     ("C02", "password_ssh_off", _check_password_ssh_off,
      "Set SSH password authentication to off in the lab VM configuration."),
     ("C03", "key_only_access", _check_key_only_access,
-     "Enable public key authentication, add an authorized key for each named lab user, and keep password authentication off."),
+     "Enable public key authentication, add an authorized key for each named lab user, "
+     "and keep password authentication off."),
     ("C04", "root_login_disabled", _check_root_login_disabled,
      "Set SSH permit root login to no; use a named account with sudo instead."),
     ("C05", "sudo_list_bounded", _check_sudo_bounded,
@@ -138,7 +139,8 @@ CONTROLS = [
     ("C07", "firewall_default_deny", _check_firewall_default_deny,
      "Set the inbound firewall default to deny and allow only the named lab ports (22)."),
     ("C08", "labnet_isolated", _check_labnet_isolated,
-     "Keep the lab VM on labnet 10.99.0.0/24 with no route to the home LAN and no route to management interfaces, as configuration fields."),
+     "Keep the lab VM on labnet 10.99.0.0/24 with no route to the home LAN and no route "
+     "to management interfaces, as configuration fields."),
     ("C09", "unused_services_off", _check_unused_services_off,
      "Disable unused services (ftp, rsh, telnet) on the lab VM."),
     ("C10", "backup_snapshot_present", _check_backup_present,

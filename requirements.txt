@@ -1,0 +1,5 @@
+# cyber-range-lab dependencies.
+# This project is stdlib-only: every module and test imports only the
+# Python standard library (verified by scanning all imports in the
+# repo on 2026-11-05). This file exists so Dependabot pip has a
+# manifest to watch; it intentionally lists no packages.
