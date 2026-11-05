@@ -15,7 +15,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LEVEL = os.path.join(ROOT, "level-1-learn")
 sys.path.insert(0, LEVEL)
 from hardening import (  # noqa: E402
-    CONTROLS, HardeningError, compare_snapshots, evaluate_snapshot,
+    CONTROLS,
+    HardeningError,
+    compare_snapshots,
+    evaluate_snapshot,
 )
 
 
