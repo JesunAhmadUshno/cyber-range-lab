@@ -14,9 +14,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LEVEL = os.path.join(ROOT, "level-2-build")
 sys.path.insert(0, LEVEL)
 from detection import (  # noqa: E402
-    BASELINE_PORTS, build_incident, deduplicate, ingest, parse_line,
-    run_detection, run_rules,
+    BASELINE_PORTS,
+    build_incident,
+    deduplicate,
+    ingest,
+    parse_line,
+    run_detection,
+    run_rules,
 )
+
 sys.path.insert(0, LEVEL)
 import run_build  # noqa: E402
 
