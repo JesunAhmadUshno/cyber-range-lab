@@ -54,7 +54,7 @@ Measured 2026-11-05 with level-3-deep/run_deep.py on the Muse VM, Python 3.12. T
 | Alerts after dedup | 6 (5 at v1.0; R5 dedup fix, see level-3-deep/README.md) |
 | Baseline drift | 2 controls (C01, C07); current snapshot 8 of 10 against baseline 10 of 10 |
 | Incident | INC-001, lifecycle closed, 4 logged transitions, closure checklist 4 of 4 |
-| Unit tests | 75 passed in total (22 Learn, 26 Build, 27 Deep), plus the scaffold smoke test |
+| Unit tests | 80 passed in total (22 Learn, 26 Build, 32 Deep), plus the scaffold smoke test |
 | Determinism | results_deep.json identical across two runs (hash verified) |
 | Deep grade | 8,400 of 10,000 (deductions in level-3-deep/README.md) |
 

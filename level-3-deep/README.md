@@ -7,7 +7,7 @@ level spec and RUNBOOK.md for operations.
 
 ## Main claim
 
-Deep ran the hardened defensive detection loop on 26 synthetic log lines from 4 sources, parsed 24 records and quarantined 2 malformed lines, produced 9 rule firings before deduplication (R1 2, R2 2, R3 1, R4 2, R5 2), collapsed them to 6 alerts after deduplication (5 at v1.0, before the R5 dedup fix below), found baseline drift on 2 of 10 hardening controls (C01 and C07, current snapshot 8 of 10 against the baseline 10 of 10), and closed incident INC-001 through its full lifecycle (open, triaged, contained, closed, 4 logged transitions, 4 of 4 closure checklist items), with 27 Deep unit tests passing as part of 75 total tests (23 and 71 at v1.0).
+Deep ran the hardened defensive detection loop on 26 synthetic log lines from 4 sources, parsed 24 records and quarantined 2 malformed lines, produced 9 rule firings before deduplication (R1 2, R2 2, R3 1, R4 2, R5 2), collapsed them to 6 alerts after deduplication (5 at v1.0, before the R5 dedup fix below), found baseline drift on 2 of 10 hardening controls (C01 and C07, current snapshot 8 of 10 against the baseline 10 of 10), and closed incident INC-001 through its full lifecycle (open, triaged, contained, closed, 4 logged transitions, 4 of 4 closure checklist items), with 32 Deep unit tests passing as part of 80 total tests (23 and 71 at v1.0).
 
 ## Update after v1.0 (2026-11-07)
 
@@ -27,6 +27,25 @@ Three defects found in review were fixed, with regression tests:
   response steps asked the reader to act on ports and updates. It
   now also lists related_alert_ids (A003 to A006, same host), linked
   but not escalated.
+
+Two measurements were added, both deterministic and written by
+level-3-deep/evaluate_deep.py to level-3-deep/results_eval.json:
+
+- Sensitivity sweep. R1 firings, R1 alerts and total alerts for
+  failed_login_threshold 1 to 10 against windows of 60, 300, 600,
+  900 and 1800 seconds. At the 600 second window, thresholds 1 to 4
+  also fire on bob's 4-failure near miss, and thresholds 7 and up
+  miss alice's 6-failure burst. Only 5 and 6 separate the two, so
+  the default of 5 is one of two values that work on these lines.
+  The anchors equal the recorded results: threshold 5 gives 2 R1
+  firings, threshold 3 gives 6.
+- Authored-intent sanity check. authored_intent.json labels each
+  line with the episode it was written for (from the hand checks
+  in level-2-build/README.md). At the default config every rule
+  scores precision 1.0 and episode recall 1.0. This is circular:
+  the same hand wrote the lines, the rules and the labels. It
+  shows the rules do what the author meant on the author's lines,
+  nothing about real logs.
 
 The fan-out set in fanout/ is dated v1.0 and keeps the v1.0 numbers.
 
@@ -100,7 +119,7 @@ recorded review times in run_deep.py, never the wall clock.
 | Incident | INC-001, opened 2026-11-05T10:08:00Z, lifecycle closed |
 | Lifecycle transitions logged | 4 (open, triaged, contained, closed) |
 | Closure checklist | 4 of 4 items true at close |
-| Unit tests | 75 passed in total (22 Learn, 26 Build, 27 Deep), plus the scaffold smoke test |
+| Unit tests | 80 passed in total (22 Learn, 26 Build, 32 Deep), plus the scaffold smoke test |
 | Determinism | results_deep.json identical across two runs (hash above) |
 
 Alerts:

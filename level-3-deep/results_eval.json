@@ -1,0 +1,543 @@
+{
+  "authored_intent_caveat": "Circular sanity check, not an evaluation. These labels record which synthetic lines were written to look suspicious, taken from the hand checks in level-2-build/README.md. The same hand wrote the lines, the rules and the labels, so precision and recall on them cannot show how the rules behave on real logs.",
+  "authored_intent_default_config": {
+    "R1": {
+      "benign_episodes_fired": [],
+      "episode_recall": 1.0,
+      "episodes_expected": [
+        "E1"
+      ],
+      "episodes_found": [
+        "E1"
+      ],
+      "firings": 2,
+      "firings_on_suspicious_lines": 2,
+      "precision": 1.0
+    },
+    "R2": {
+      "benign_episodes_fired": [],
+      "episode_recall": 1.0,
+      "episodes_expected": [
+        "E9"
+      ],
+      "episodes_found": [
+        "E9"
+      ],
+      "firings": 2,
+      "firings_on_suspicious_lines": 2,
+      "precision": 1.0
+    },
+    "R3": {
+      "benign_episodes_fired": [],
+      "episode_recall": 1.0,
+      "episodes_expected": [
+        "E6"
+      ],
+      "episodes_found": [
+        "E6"
+      ],
+      "firings": 1,
+      "firings_on_suspicious_lines": 1,
+      "precision": 1.0
+    },
+    "R4": {
+      "benign_episodes_fired": [],
+      "episode_recall": 1.0,
+      "episodes_expected": [
+        "E5"
+      ],
+      "episodes_found": [
+        "E5"
+      ],
+      "firings": 2,
+      "firings_on_suspicious_lines": 2,
+      "precision": 1.0
+    }
+  },
+  "default_config": {
+    "admin_users": [
+      "labadmin",
+      "laboperator"
+    ],
+    "baseline_ports": [
+      22,
+      9090
+    ],
+    "dedup_window_seconds": 600,
+    "failed_login_threshold": 5,
+    "failed_login_window_seconds": 600
+  },
+  "scenario": "R1 threshold and window sweep plus an authored-intent sanity check on the synthetic logs, defensive scope only",
+  "sweep": [
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 1,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 10,
+      "r1_precision": 0.6
+    },
+    {
+      "alerts_total": 6,
+      "failed_login_threshold": 2,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 1,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 1,
+      "r1_precision": 1.0
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 3,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 4,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 5,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 6,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 7,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 8,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 9,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 10,
+      "failed_login_window_seconds": 60,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 1,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 10,
+      "r1_precision": 0.6
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 2,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 8,
+      "r1_precision": 0.625
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 3,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 6,
+      "r1_precision": 0.6667
+    },
+    {
+      "alerts_total": 6,
+      "failed_login_threshold": 4,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 1,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 1,
+      "r1_precision": 1.0
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 5,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 6,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 7,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 8,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 9,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 10,
+      "failed_login_window_seconds": 300,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 1,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 10,
+      "r1_precision": 0.6
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 2,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 8,
+      "r1_precision": 0.625
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 3,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 6,
+      "r1_precision": 0.6667
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 4,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 4,
+      "r1_precision": 0.75
+    },
+    {
+      "alerts_total": 6,
+      "failed_login_threshold": 5,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 1,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 2,
+      "r1_precision": 1.0
+    },
+    {
+      "alerts_total": 6,
+      "failed_login_threshold": 6,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 1,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 1,
+      "r1_precision": 1.0
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 7,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 8,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 9,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 10,
+      "failed_login_window_seconds": 600,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 1,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 10,
+      "r1_precision": 0.6
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 2,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 8,
+      "r1_precision": 0.625
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 3,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 6,
+      "r1_precision": 0.6667
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 4,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 4,
+      "r1_precision": 0.75
+    },
+    {
+      "alerts_total": 6,
+      "failed_login_threshold": 5,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 1,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 2,
+      "r1_precision": 1.0
+    },
+    {
+      "alerts_total": 6,
+      "failed_login_threshold": 6,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 1,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 1,
+      "r1_precision": 1.0
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 7,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 8,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 9,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 10,
+      "failed_login_window_seconds": 900,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 1,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 10,
+      "r1_precision": 0.6
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 2,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 8,
+      "r1_precision": 0.625
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 3,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 6,
+      "r1_precision": 0.6667
+    },
+    {
+      "alerts_total": 7,
+      "failed_login_threshold": 4,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 2,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 4,
+      "r1_precision": 0.75
+    },
+    {
+      "alerts_total": 6,
+      "failed_login_threshold": 5,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 1,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 2,
+      "r1_precision": 1.0
+    },
+    {
+      "alerts_total": 6,
+      "failed_login_threshold": 6,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 1,
+      "r1_episode_recall": 1.0,
+      "r1_firings": 1,
+      "r1_precision": 1.0
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 7,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 8,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 9,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    },
+    {
+      "alerts_total": 5,
+      "failed_login_threshold": 10,
+      "failed_login_window_seconds": 1800,
+      "r1_alerts": 0,
+      "r1_episode_recall": 0.0,
+      "r1_firings": 0,
+      "r1_precision": null
+    }
+  ],
+  "synthetic": true,
+  "thresholds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "windows_seconds": [
+    60,
+    300,
+    600,
+    900,
+    1800
+  ]
+}
