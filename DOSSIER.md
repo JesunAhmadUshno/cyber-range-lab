@@ -20,7 +20,7 @@ grade 8,300 of 10,000. Compressed Deep DONE: the range runbook
 plus the hardened loop (configurable thresholds validated from
 config.json, R5 baseline drift reusing the Learn checker, an
 incident lifecycle with logged transitions and a closure
-checklist), measured at 9 firings, 5 alerts, drift on 2 controls,
+checklist), measured at 9 firings, 5 alerts at v1.0 (6 after the R5 dedup fix), drift on 2 controls,
 incident closed, 71 total tests, grade 8,400 of 10,000. All data
 is synthetic teaching data; no live R610 capture is claimed.
 Tools: Python 3.12 standard library only, runs on the Muse VM.

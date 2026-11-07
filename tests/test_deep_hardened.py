@@ -4,8 +4,9 @@ Regression expectations come from the Build results on the same
 synthetic sample logs: 26 lines, 24 parsed, 2 quarantined; R1 2,
 R2 2, R3 1, R4 2 firings under the default config. Deep adds R5:
 the current snapshot drifts on C01 and C07 against the Learn
-after snapshot, so R5 fires 2 times and dedups to 1 alert.
-Totals: 9 firings, 5 alerts.
+after snapshot, so R5 fires 2 times. Dedup keys R5 on the control id
+as well, so each drifted control keeps its own alert (2 alerts).
+Totals: 9 firings, 6 alerts.
 """
 import copy
 import json
@@ -26,6 +27,7 @@ from detection_hardened import (  # noqa: E402
     DetectionConfigError,
     IncidentError,
     baseline_drift,
+    ingest,
     new_incident,
     run_rules_configured,
     transition,
@@ -102,7 +104,7 @@ class TestRegression(unittest.TestCase):
 
     def test_deep_totals(self):
         self.assertEqual(self.result["firings_total_before_dedup"], 9)
-        self.assertEqual(self.result["alerts_total_after_dedup"], 5)
+        self.assertEqual(self.result["alerts_total_after_dedup"], 6)
 
     def test_incident_identity_preserved(self):
         inc = self.result["incident"]
@@ -236,6 +238,36 @@ class TestLifecycle(unittest.TestCase):
         with self.assertRaises(IncidentError):
             transition(None, "triaged", "2026-11-05T11:00:00Z",
                        "lab-reviewer", "No incident.")
+
+
+class TestUpgrades(unittest.TestCase):
+    def test_each_drifted_control_gets_its_own_alert(self):
+        alerts = deep_result()["alerts"]
+        r5 = [a for a in alerts if a["rule"] == "R5"]
+        self.assertEqual([a["alert_id"] for a in r5], ["A005", "A006"])
+        self.assertIn("C01", r5[0]["detail"])
+        self.assertIn("C07", r5[1]["detail"])
+        self.assertEqual([a["count"] for a in r5], [1, 1])
+
+    def test_r1_detail_uses_configured_window(self):
+        records, _ = ingest(run_build.load_sources())
+        cfg = dict(CONFIG)
+        cfg["failed_login_window_seconds"] = 900
+        r1 = [f for f in run_rules_configured(records, cfg) if f["rule"] == "R1"]
+        self.assertEqual(r1[0]["detail"], "5 failed logins in 15 minutes")
+        cfg["failed_login_window_seconds"] = 90
+        cfg["failed_login_threshold"] = 1
+        r1 = [f for f in run_rules_configured(records, cfg) if f["rule"] == "R1"]
+        self.assertEqual(r1[0]["detail"], "1 failed logins in 90 seconds")
+
+    def test_default_r1_detail_matches_build(self):
+        alerts = deep_result()["alerts"]
+        self.assertEqual(alerts[0]["detail"], "5 failed logins in 10 minutes")
+
+    def test_incident_links_lower_severity_alerts(self):
+        inc = deep_result()["incident"]
+        self.assertEqual(inc["alert_ids"], ["A001", "A002"])
+        self.assertEqual(inc["related_alert_ids"], ["A003", "A004", "A005", "A006"])
 
 
 class TestDeterminism(unittest.TestCase):
