@@ -1,0 +1,22 @@
+{
+  "synthetic": true,
+  "caveat": "Circular sanity check, not an evaluation. These labels record which synthetic lines were written to look suspicious, taken from the hand checks in level-2-build/README.md. The same hand wrote the lines, the rules and the labels, so precision and recall on them cannot show how the rules behave on real logs.",
+  "episodes": {
+    "E1": {"intent": "suspicious", "expected_rule": "R1", "what": "alice: 6 failed SSH logins in 9 minutes"},
+    "E2": {"intent": "benign", "expected_rule": null, "what": "bob: 4 failed SSH logins, written as a near miss below the threshold of 5"},
+    "E3": {"intent": "benign", "expected_rule": null, "what": "labadmin: one accepted login"},
+    "E4": {"intent": "benign", "expected_rule": null, "what": "firewall allow and deny lines, read by no rule"},
+    "E5": {"intent": "suspicious", "expected_rule": "R4", "what": "automatic updates reported disabled twice"},
+    "E6": {"intent": "suspicious", "expected_rule": "R3", "what": "listening port 8080, outside baseline ports 22 and 9090"},
+    "E7": {"intent": "benign", "expected_rule": null, "what": "listening ports 9090 and 22, inside the baseline"},
+    "E8": {"intent": "benign", "expected_rule": null, "what": "daily-cleanup.service started"},
+    "E9": {"intent": "suspicious", "expected_rule": "R2", "what": "guest: 2 sudo to root, not an admin user"},
+    "E10": {"intent": "benign", "expected_rule": null, "what": "labadmin and laboperator: sudo to root, approved admins"}
+  },
+  "lines": {
+    "auth": ["E1", "E1", "E1", "E1", "E1", "E1", "E2", "E2", "E2", "E2", "E3", null],
+    "firewall": ["E4", "E4", "E4"],
+    "service": ["E5", "E5", "E6", "E7", "E7", "E8"],
+    "sudo": ["E9", "E9", "E10", "E10", null]
+  }
+}
