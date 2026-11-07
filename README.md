@@ -5,6 +5,10 @@ A working cyber range on an isolated lab network. Defense first: hardening, logg
 Status: v1.0 SHIPPED (2026-11-05, ROADMAP-V3-BATCH). Learn, Build, and compressed Deep are built, tested, and measured below. Defensive scope only; all data is synthetic teaching data, not a live R610 capture. Any scenario content stays held and needs Jesun's sign-off; none is drafted.
 Project: P24. Fleet node: Dell R610. Wave: Wave 5 (after P13).
 
+Live dashboard: https://jesunahmadushno.github.io/cyber-range-lab/
+
+The dashboard (site/) runs a JavaScript port of the three levels in the browser on the repo's own synthetic logs and snapshots. `npm run build` first runs site/src/engine.check.mjs, which fails the build unless the port reproduces results_learn.json, results_build.json, results_deep.json and results_eval.json exactly. Build it with `cd site && npm ci && npm run build`. It is published by .github/workflows/pages.yml; docs/index.md stays as the plain text summary.
+
 ## Start here
 
 1. Read SPEC.md for scope and acceptance criteria.
@@ -57,6 +61,26 @@ Measured 2026-11-05 with level-3-deep/run_deep.py on the Muse VM, Python 3.12. T
 | Unit tests | 80 passed in total (22 Learn, 26 Build, 32 Deep), plus the scaffold smoke test |
 | Determinism | results_deep.json identical across two runs (hash verified) |
 | Deep grade | 8,400 of 10,000 (deductions in level-3-deep/README.md) |
+
+## Threat model and scope
+
+The range models one isolated lab VM (lab-vm-01 on labnet 10.99.0.0/24) whose owner wants to know two things: is the VM configured to a hardened baseline, and do its logs show signals that need a human to look. The defender sees configuration snapshots and four log sources (auth, sudo, service, firewall). The signals in scope are repeated failed SSH logins, sudo to root outside the admin list, a listening port outside the baseline, automatic updates switched off, and a hardening control regressing from the baseline. Out of scope: anything off the VM, network traffic, malware, log tampering, and any adversary who avoids these five signals. Every log line and snapshot is synthetic teaching data written for this repo.
+
+## Candidate ATT&CK mapping
+
+Detection-side labels only, marked candidate: not reviewed against the ATT&CK data sources and not validated on any real activity.
+
+| Rule | Candidate technique | Note |
+| --- | --- | --- |
+| R1 repeated_failed_logins | T1110 Brute Force | Count over a window, no source or password-spray logic |
+| R2 sudo_by_non_admin_user | T1548.003 Sudo and Sudo Caching | Flags use outside the admin list, not abuse of sudo caching itself |
+| R4 automatic_updates_disabled | T1562.001 Disable or Modify Tools | Closest fit; updates are not a security tool in the strict sense |
+| R3 new_listening_port_not_in_baseline | unmapped | Configuration hygiene, not an attack technique |
+| R5 baseline_drift | unmapped | Configuration drift, not an attack technique |
+
+## Research review
+
+docs/research-review.md grades the repo against a research rubric, lists what was fixed after v1.0 (the R5 dedup collapse, the R1 window text, related alerts on the incident, the threshold sweep and the authored-intent check), and names the data or compute each remaining gap needs.
 
 ## Novelty
 
