@@ -98,6 +98,13 @@ def validate_config(config):
     return out
 
 
+def _window_text(seconds):
+    """Human text for the R1 window: whole minutes when it divides evenly."""
+    if seconds % 60 == 0:
+        return str(seconds // 60) + (" minute" if seconds == 60 else " minutes")
+    return str(seconds) + " seconds"
+
+
 def _firing(rule, name, severity, ts, host, user, detail):
     return {"rule": rule, "rule_name": name, "severity": severity,
             "ts": ts, "host": host, "user": user, "detail": detail}
@@ -124,7 +131,7 @@ def run_rules_configured(records, config):
                 firings.append(_firing(
                     "R1", "repeated_failed_logins", "high", rec["ts"],
                     rec["host"], rec["user"],
-                    str(count) + " failed logins in 10 minutes"))
+                    str(count) + " failed logins in " + _window_text(window)))
     for rec in ordered:
         if (rec["event"] == "sudo_to_root"
                 and rec["user"] not in cfg["admin_users"]):
@@ -168,10 +175,13 @@ def baseline_drift(baseline_snapshot, current_snapshot, at_ts,
         cid = control["control_id"]
         if base_pass.get(cid) and not control["passed"]:
             drifted.append(cid)
-            firings.append(_firing(
+            firing = _firing(
                 "R5", "baseline_drift", "medium", at_ts, host, "system",
                 "control " + cid + " " + control["control"]
-                + " passed in baseline and fails in current snapshot"))
+                + " passed in baseline and fails in current snapshot")
+            # Carried so dedup keeps one alert per drifted control.
+            firing["control_id"] = cid
+            firings.append(firing)
     summary = {
         "baseline_passed": baseline["passed"],
         "baseline_total": baseline["total"],
@@ -184,13 +194,20 @@ def baseline_drift(baseline_snapshot, current_snapshot, at_ts,
 
 
 def deduplicate_configured(firings, config):
-    """Collapse repeated firings inside the configured dedup window."""
+    """Collapse repeated firings inside the configured dedup window.
+
+    The key is (rule, host, user, control id). Only R5 firings carry a
+    control id; without it, two controls drifting at the same time
+    merged into one alert that named only the first control (the
+    v1.0 behaviour, fixed after v1.0).
+    """
     cfg = validate_config(config)
     window = cfg["dedup_window_seconds"]
     alerts = []
     groups = {}
     for firing in firings:
-        key = (firing["rule"], firing["host"], firing["user"])
+        key = (firing["rule"], firing["host"], firing["user"],
+               firing.get("control_id", ""))
         groups.setdefault(key, []).append(firing)
     for key in sorted(groups):
         group = sorted(groups[key], key=lambda f: f["ts"])
@@ -231,6 +248,11 @@ def new_incident(alerts):
     base = build_detection.build_incident(alerts)
     if base is None:
         return None
+    # Lower severity alerts are linked, not escalated, so the response
+    # steps about ports and updates point at alerts the incident holds.
+    base["related_alert_ids"] = [a["alert_id"] for a in alerts
+                                 if a["alert_id"] not in base["alert_ids"]
+                                 and a["host"] in base["affected_hosts"]]
     base["lifecycle"] = "open"
     base["transitions"] = [{
         "from": None, "to": "open", "at": base["opened_at"],

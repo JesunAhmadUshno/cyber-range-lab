@@ -50,8 +50,20 @@
     },
     {
       "alert_id": "A005",
-      "count": 2,
+      "count": 1,
       "detail": "control C01 automatic_updates_on passed in baseline and fails in current snapshot",
+      "first_seen": "2026-11-05T10:52:00Z",
+      "host": "lab-vm-01",
+      "last_seen": "2026-11-05T10:52:00Z",
+      "rule": "R5",
+      "rule_name": "baseline_drift",
+      "severity": "medium",
+      "user": "system"
+    },
+    {
+      "alert_id": "A006",
+      "count": 1,
+      "detail": "control C07 firewall_default_deny passed in baseline and fails in current snapshot",
       "first_seen": "2026-11-05T10:52:00Z",
       "host": "lab-vm-01",
       "last_seen": "2026-11-05T10:52:00Z",
@@ -61,7 +73,7 @@
       "user": "system"
     }
   ],
-  "alerts_total_after_dedup": 5,
+  "alerts_total_after_dedup": 6,
   "baseline_drift": {
     "baseline_passed": 10,
     "baseline_total": 10,
@@ -114,6 +126,12 @@
       "Re-enable automatic updates and confirm the update service reports status enabled.",
       "Keep the incident open until a reviewer confirms the signals are explained, then record the closure note."
     ],
+    "related_alert_ids": [
+      "A003",
+      "A004",
+      "A005",
+      "A006"
+    ],
     "severity": "high",
     "status": "closed",
     "transitions": [
@@ -165,7 +183,7 @@
       "firings_before_dedup": 2
     },
     "R5": {
-      "alerts_after_dedup": 1,
+      "alerts_after_dedup": 2,
       "firings_before_dedup": 2
     }
   },

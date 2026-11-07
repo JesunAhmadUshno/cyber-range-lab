@@ -51,10 +51,10 @@ Measured 2026-11-05 with level-3-deep/run_deep.py on the Muse VM, Python 3.12. T
 | Log lines, 4 sources | 26 lines |
 | Parsed records, quarantined | 24 parsed, 2 quarantined |
 | Rule firings before dedup (R1 2, R2 2, R3 1, R4 2, R5 2) | 9 |
-| Alerts after dedup | 5 |
+| Alerts after dedup | 6 (5 at v1.0; R5 dedup fix, see level-3-deep/README.md) |
 | Baseline drift | 2 controls (C01, C07); current snapshot 8 of 10 against baseline 10 of 10 |
 | Incident | INC-001, lifecycle closed, 4 logged transitions, closure checklist 4 of 4 |
-| Unit tests | 71 passed in total (22 Learn, 26 Build, 23 Deep), plus the scaffold smoke test |
+| Unit tests | 75 passed in total (22 Learn, 26 Build, 27 Deep), plus the scaffold smoke test |
 | Determinism | results_deep.json identical across two runs (hash verified) |
 | Deep grade | 8,400 of 10,000 (deductions in level-3-deep/README.md) |
 
@@ -64,7 +64,8 @@ PROPOSED. See NOVELTY.md. The novelty text is a draft until the Jev claim_check 
 
 ## Fan-out
 
-Written fan-out set for v1.0, dated 2026-11-05, in fanout/:
+Written fan-out set for v1.0, dated 2026-11-05, in fanout/ (it keeps the v1.0 numbers, including 5 Deep alerts
+before the R5 dedup fix):
 
 - fanout/blog-post.md: "Hardening First, Detection Second", the
   full story with the main results claim gated by Jev

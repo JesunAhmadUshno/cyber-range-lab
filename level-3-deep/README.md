@@ -7,7 +7,28 @@ level spec and RUNBOOK.md for operations.
 
 ## Main claim
 
-Deep ran the hardened defensive detection loop on 26 synthetic log lines from 4 sources, parsed 24 records and quarantined 2 malformed lines, produced 9 rule firings before deduplication (R1 2, R2 2, R3 1, R4 2, R5 2), collapsed them to 5 alerts after deduplication, found baseline drift on 2 of 10 hardening controls (C01 and C07, current snapshot 8 of 10 against the baseline 10 of 10), and closed incident INC-001 through its full lifecycle (open, triaged, contained, closed, 4 logged transitions, 4 of 4 closure checklist items), with 23 new Deep unit tests passing as part of 71 total tests.
+Deep ran the hardened defensive detection loop on 26 synthetic log lines from 4 sources, parsed 24 records and quarantined 2 malformed lines, produced 9 rule firings before deduplication (R1 2, R2 2, R3 1, R4 2, R5 2), collapsed them to 6 alerts after deduplication (5 at v1.0, before the R5 dedup fix below), found baseline drift on 2 of 10 hardening controls (C01 and C07, current snapshot 8 of 10 against the baseline 10 of 10), and closed incident INC-001 through its full lifecycle (open, triaged, contained, closed, 4 logged transitions, 4 of 4 closure checklist items), with 27 Deep unit tests passing as part of 75 total tests (23 and 71 at v1.0).
+
+## Update after v1.0 (2026-11-07)
+
+Three defects found in review were fixed, with regression tests:
+
+- R5 dedup collapse. Dedup keyed on (rule, host, user), so the two
+  drift firings (C01 and C07, same timestamp) merged into one alert
+  A005 whose text named only C01; C07 firewall_default_deny dropped
+  out of the alert. Dedup now also keys on the control id, so each
+  drifted control keeps its own alert: A005 (C01) and A006 (C07).
+  Alerts go from 5 to 6. Firings are unchanged at 9.
+- R1 detail text said "in 10 minutes" whatever the configured
+  window. It now states the configured window ("in 15 minutes" for
+  900 seconds, "in 90 seconds" for 90). The default text is
+  unchanged, so A001 still reads "5 failed logins in 10 minutes".
+- The incident held only the high severity alerts, while its
+  response steps asked the reader to act on ports and updates. It
+  now also lists related_alert_ids (A003 to A006, same host), linked
+  but not escalated.
+
+The fan-out set in fanout/ is dated v1.0 and keeps the v1.0 numbers.
 
 ## Honest scope line
 
@@ -57,9 +78,10 @@ standing P24 rule.
 
 The runner writes level-3-deep/results_deep.json
 deterministically: run it twice and the file is identical
-(verified 2026-11-05: sha256
-6440fca7eeb3433973f9f85c29a086fb548d48412407f8a9f22b64684d61ce02
-on both runs). Timestamps come from the log lines and the fixed
+(verified 2026-11-07 after the fixes above: sha256
+e0e633f7e049c5ccd806abdc931e8011b597c2f2e895695ad9964c21068424bb
+on both runs; the v1.0 file hashed
+6440fca7eeb3433973f9f85c29a086fb548d48412407f8a9f22b64684d61ce02). Timestamps come from the log lines and the fixed
 recorded review times in run_deep.py, never the wall clock.
 
 ## Results (measured 2026-11-05, Muse VM, Python 3.12)
@@ -70,7 +92,7 @@ recorded review times in run_deep.py, never the wall clock.
 | Parsed records | 24 |
 | Quarantined malformed lines | 2 |
 | Rule firings before dedup (R1 2, R2 2, R3 1, R4 2, R5 2) | 9 |
-| Alerts after dedup | 5 |
+| Alerts after dedup | 6 (5 at v1.0, before the R5 dedup fix) |
 | Baseline controls passed | 10 of 10 |
 | Current snapshot controls passed | 8 of 10 |
 | Drifted controls | 2 (C01 automatic_updates_on, C07 firewall_default_deny) |
@@ -78,7 +100,7 @@ recorded review times in run_deep.py, never the wall clock.
 | Incident | INC-001, opened 2026-11-05T10:08:00Z, lifecycle closed |
 | Lifecycle transitions logged | 4 (open, triaged, contained, closed) |
 | Closure checklist | 4 of 4 items true at close |
-| Unit tests | 71 passed in total (22 Learn, 26 Build, 23 Deep), plus the scaffold smoke test |
+| Unit tests | 75 passed in total (22 Learn, 26 Build, 27 Deep), plus the scaffold smoke test |
 | Determinism | results_deep.json identical across two runs (hash above) |
 
 Alerts:
@@ -89,15 +111,17 @@ Alerts:
 | A002 | R2 | high | lab-vm-01 | guest | 2026-11-05T10:15:00Z | 2 |
 | A003 | R4 | medium | lab-vm-01 | system | 2026-11-05T10:30:00Z | 2 |
 | A004 | R3 | medium | lab-vm-01 | system | 2026-11-05T10:35:00Z | 1 |
-| A005 | R5 | medium | lab-vm-01 | system | 2026-11-05T10:52:00Z | 2 |
+| A005 | R5 | medium | lab-vm-01 | system | 2026-11-05T10:52:00Z | 1 |
+| A006 | R5 | medium | lab-vm-01 | system | 2026-11-05T10:52:00Z | 1 |
 
 Hand checks: R1 to R4 match Build exactly on the same logs
 (2 + 2 + 1 + 2 = 7). The current snapshot sets automatic updates
 off, which fails C01, and sets the firewall default to allow
 with ports 22 and 3389, which fails C07. Every other control
 matches the baseline, so drift is 2 and the current score is
-10 minus 2 = 8 of 10. Firings 7 + 2 = 9. Each rule dedups to
-one alert, so alerts are 5. At threshold 3, alice has 6 failed
+10 minus 2 = 8 of 10. Firings 7 + 2 = 9. R1 to R4 each dedup to
+one alert and R5 keeps one alert per drifted control, so alerts
+are 4 + 2 = 6. At threshold 3, alice has 6 failed
 logins and fires at the 3rd, 4th, 5th, and 6th (4 firings) and
 bob has 4 and fires at the 3rd and 4th (2 firings), total 6.
 
