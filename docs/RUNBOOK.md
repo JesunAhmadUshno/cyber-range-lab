@@ -32,7 +32,7 @@ lab host only inside the isolated lab network.
 ## 3. Baseline check
 
 - Run the Learn checker against the current snapshot:
-  python level-1-learn/run_learn.py
+  python src/run_learn.py
 - Expected hardened result: 10 of 10 controls pass on the after
   snapshot.
 - Any control that passed in the baseline and fails now is drift.
@@ -41,11 +41,11 @@ lab host only inside the isolated lab network.
 
 ## 4. Detection run
 
-- Confirm the config first: level-3-deep/config.json holds the
+- Confirm the config first: experiments/config.json holds the
   failed login threshold and window, the dedup window, the admin
   users, and the baseline ports. Changing a value changes the
   results; record any change in the run notes.
-- Run: python level-3-deep/run_deep.py
+- Run: python src/run_deep.py
 - Read results_deep.json: per-source parse and quarantine counts,
   per-rule firings and alerts, the drift summary, and the
   incident record with its lifecycle log.

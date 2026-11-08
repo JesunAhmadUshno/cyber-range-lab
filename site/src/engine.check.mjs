@@ -7,16 +7,16 @@ import * as E from './engine.js';
 const root = new URL('../../', import.meta.url);
 const read = (p) => fs.readFileSync(new URL(p, root), 'utf8');
 const json = (p) => JSON.parse(read(p));
-const learn = json('level-1-learn/results_learn.json');
-const build = json('level-2-build/results_build.json');
-const deep = json('level-3-deep/results_deep.json');
-const evalRes = json('level-3-deep/results_eval.json');
-const before = json('level-1-learn/snapshot_before.json');
-const after = json('level-1-learn/snapshot_after.json');
-const current = json('level-3-deep/snapshot_current.json');
-const config = json('level-3-deep/config.json');
-const labels = json('level-3-deep/authored_intent.json');
-const sources = Object.fromEntries(['auth', 'sudo', 'service', 'firewall'].map((s) => [s, E.splitLines(read(`level-2-build/sample_logs/${s}.log`))]));
+const learn = json('results/results_learn.json');
+const build = json('results/results_build.json');
+const deep = json('results/results_deep.json');
+const evalRes = json('results/results_eval.json');
+const before = json('experiments/snapshot_before.json');
+const after = json('experiments/snapshot_after.json');
+const current = json('experiments/snapshot_current.json');
+const config = json('experiments/config.json');
+const labels = json('experiments/authored_intent.json');
+const sources = Object.fromEntries(['auth', 'sudo', 'service', 'firewall'].map((s) => [s, E.splitLines(read(`experiments/sample_logs/${s}.log`))]));
 
 // Level 1: every control, remediation and score.
 const strip = ({ label, synthetic, controls, passed, total, score_percent }) => ({ label, synthetic, controls, passed, total, score_percent });
@@ -58,10 +58,12 @@ assert.deepEqual(E.sweep(sources, config, labels, drift, evalRes.thresholds, eva
 assert.deepEqual(E.intentScores(E.runRules(d.records, config), E.lineEpisodes(sources, labels), labels), evalRes.authored_intent_default_config);
 
 // Docs read at build time.
-const readme = E.parseDeepReadme(read('level-3-deep/README.md'));
-assert.equal(readme.grade, 8400);
-assert.equal(readme.gradeOf - readme.grade, readme.deductions.reduce((s, x) => s + x.minus, 0));
-assert.ok(readme.failureModes.length >= 5 && readme.sha256);
+const report = E.parseReport(read('REPORT.md'));
+assert.ok(report.failureModes.length >= 5, 'REPORT.md failure modes');
+assert.ok(report.sha256, 'REPORT.md records the results_deep.json hash');
+const readme = E.parseReadme(read('README.md'));
+assert.ok(readme.verdict, 'README.md verdict line');
+assert.deepEqual(readme.lifecycle.map((s) => s.stage), ['Question', 'Proposal', 'Baseline', 'Build', 'Evaluate', 'Report', 'Review', 'Release']);
 const tests = ['test_learn_hardening', 'test_build_detection', 'test_deep_hardened', 'test_deep_eval'].map((f) => E.countTests(read(`tests/${f}.py`)));
 assert.deepEqual(tests.slice(0, 2), [22, 26]);
 

@@ -20,8 +20,6 @@ URL: https://github.com/JesunAhmadUshno/cyber-range-lab/releases/tag/v0.1
   percent); improvement plus 10 controls.
 - Tests: 22 unit tests in tests/test_learn_hardening.py, plus
   the scaffold smoke test.
-- Grade: 8,500 of 10,000, deductions itemized in the Learn
-  README.
 - Limits carried in the release: synthetic snapshots only,
   configuration fields only, one VM and 10 controls, teaching
   policy constants, no detection or drift checking at this
@@ -41,8 +39,6 @@ URL: https://github.com/JesunAhmadUshno/cyber-range-lab/releases/tag/v0.5
   INC-001 opened 2026-11-05T10:08:00Z at high severity with
   status open.
 - Tests: 26 Build unit tests, 48 in total with Learn.
-- Grade: 8,300 of 10,000, deductions itemized in the Build
-  README.
 - Limits carried in the release: synthetic logs only, teaching
   thresholds, single host and batch only, parser covers only
   the authored formats, incident is a record with no closure
@@ -64,8 +60,6 @@ URL: https://github.com/JesunAhmadUshno/cyber-range-lab/releases/tag/v1.0
   10), incident INC-001 closed through its full lifecycle with
   4 logged transitions and 4 of 4 closure checklist items.
 - Tests: 23 Deep unit tests, 71 in total with Learn and Build.
-- Grade: 8,400 of 10,000, deductions itemized in the Deep
-  README (total deductions 1,600).
 - The rest of the v2 Deep scope is the v1.1 backlog in
   ROADMAP.md. It is not part of v1.0 and is not claimed by
   these notes. Scenario work stays held for Jesun's batched

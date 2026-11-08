@@ -32,14 +32,13 @@ the measured work below.
 
 Present: v1.0 closes three levels on 2026-11-05. Learn built a
 10-control hardening checklist over synthetic before and after
-lab VM snapshots (grade 8,500 of 10,000). Build added a defensive
+lab VM snapshots. Build added a defensive
 detection loop end to end on synthetic logs: 4 sources to one
 central record list, 4 named rules, deduplicated alerts, and one
-incident record (grade 8,300 of 10,000). Compressed Deep added
+incident record. Compressed Deep added
 the range runbook and hardened the loop: configurable thresholds
 validated from config, a baseline drift rule reusing the Learn
-checker, and an incident lifecycle with a closure checklist
-(grade 8,400 of 10,000).
+checker, and an incident lifecycle with a closure checklist.
 
 Future: the rest of the v2 Deep scope is named in ROADMAP.md in
 the repo as the v1.1 backlog. It includes live operation on the
@@ -51,7 +50,7 @@ here. Scenario work stays held, not backlog.
 
 ## Main results claim
 
-At v1.0, on synthetic teaching data only with no live machine read: Learn passed 22 tests on a 10-control hardening checklist over two synthetic lab VM snapshots, where the before snapshot passed 0 of 10 controls at 0 percent and the after snapshot passed 10 of 10 controls at 100 percent, an improvement of 10 controls, grade 8,500 of 10,000; Build passed 26 tests (48 tests in total) on 26 synthetic log lines from 4 sources, parsed 24 records and quarantined 2 malformed lines, produced 7 rule firings before deduplication (R1 2, R2 2, R3 1, R4 2) collapsed to 4 alerts after deduplication, and created 1 incident record INC-001 opened at 2026-11-05T10:08:00Z at high severity, grade 8,300 of 10,000; compressed Deep passed 23 tests (71 tests in total) on the same 26 synthetic log lines with 24 parsed and 2 quarantined, produced 9 rule firings before deduplication (R1 2, R2 2, R3 1, R4 2, R5 2) collapsed to 5 alerts after deduplication, found baseline drift on 2 controls (C01 and C07, baseline 10 of 10 against current snapshot 8 of 10), and closed incident INC-001 through its full lifecycle with 4 logged transitions and 4 of 4 closure checklist items, grade 8,400 of 10,000.
+At v1.0, on synthetic teaching data only with no live machine read: Learn passed 22 tests on a 10-control hardening checklist over two synthetic lab VM snapshots, where the before snapshot passed 0 of 10 controls at 0 percent and the after snapshot passed 10 of 10 controls at 100 percent, an improvement of 10 controls; Build passed 26 tests (48 tests in total) on 26 synthetic log lines from 4 sources, parsed 24 records and quarantined 2 malformed lines, produced 7 rule firings before deduplication (R1 2, R2 2, R3 1, R4 2) collapsed to 4 alerts after deduplication, and created 1 incident record INC-001 opened at 2026-11-05T10:08:00Z at high severity; compressed Deep passed 23 tests (71 tests in total) on the same 26 synthetic log lines with 24 parsed and 2 quarantined, produced 9 rule firings before deduplication (R1 2, R2 2, R3 1, R4 2, R5 2) collapsed to 5 alerts after deduplication, found baseline drift on 2 controls (C01 and C07, baseline 10 of 10 against current snapshot 8 of 10), and closed incident INC-001 through its full lifecycle with 4 logged transitions and 4 of 4 closure checklist items.
 
 Every number in that claim comes from a run recorded in the
 level READMEs and results files in the repo, on synthetic data.
@@ -79,8 +78,6 @@ A failed control carries defensive remediation text only.
 | Tests | 22 |
 | Determinism | results_learn.json identical across two runs (hash verified) |
 
-Grade: 8,500 of 10,000, deductions itemized in the Learn README.
-
 ### Level 2, Build (release v0.5)
 
 Build reads 4 synthetic sources (auth, sudo, service, firewall)
@@ -99,8 +96,6 @@ record for the high severity alerts.
 | Incident | INC-001, opened 2026-11-05T10:08:00Z, high severity, status open |
 | Tests | 26 Build, 48 in total |
 | Determinism | results_build.json identical across two runs (hash verified) |
-
-Grade: 8,300 of 10,000, deductions itemized in the Build README.
 
 ### Level 3, Deep, compressed (release v1.0)
 
@@ -122,17 +117,6 @@ against the hardened baseline), adds an incident lifecycle
 | Incident | INC-001, lifecycle closed, 4 logged transitions, closure checklist 4 of 4 |
 | Tests | 23 Deep, 71 in total |
 | Determinism | results_deep.json identical across two runs (hash verified) |
-
-Grade: 8,400 of 10,000. Deductions are itemized in the Deep
-README: minus 600 for synthetic logs and snapshots with no live
-capture, minus 300 for single host and batch only, minus 200
-for running on the Muse VM instead of the Dell R610, minus 200
-because config values are validated teaching defaults and not a
-reviewed site policy, minus 200 because drift compares
-configuration fields only and Deep adds one new rule type only,
-and minus 100 because the lifecycle is an in-memory record with
-no persistence or notification. Total deductions 1,600, and
-10,000 minus 1,600 is 8,400.
 
 ## Honest limits
 
@@ -157,7 +141,7 @@ no persistence or notification. Total deductions 1,600, and
 - Compressed Deep is not the full v2 Deep scope. The remainder
   is the named v1.1 backlog in ROADMAP.md.
 - The runs executed on the Muse VM, not the assigned Dell R610
-  fleet node. That deduction is named in each level grade.
+  fleet node.
 
 ## Where to go next
 

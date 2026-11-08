@@ -1,5 +1,5 @@
-// JS port of level-1-learn/hardening.py, level-2-build/detection.py,
-// level-3-deep/detection_hardened.py and level-3-deep/evaluate_deep.py.
+// JS port of src/hardening.py, src/detection.py,
+// src/detection_hardened.py and src/evaluate_deep.py.
 // Same rules, same sort keys, same messages. engine.check.mjs runs before
 // every build and fails it if this port stops reproducing the committed results.
 
@@ -386,17 +386,18 @@ const section = (md, heading) => {
 };
 const bullets = (text) => text.split(/\n- /).slice(1).map((b) => b.replace(/\s*\n\s*/g, ' ').trim());
 
-export function parseDeepReadme(md) {
-  const grade = section(md, 'Grade');
-  const g = /Grade: ([\d,]+) of ([\d,]+)/.exec(grade);
-  const num = (s) => Number(s.replace(/,/g, ''));
-  const deductions = bullets(grade).map((b) => {
-    const m = /^(.*?):?\s*minus ([\d,]+)\.?$/.exec(b);
-    return m ? { what: m[1].replace(/:$/, ''), minus: num(m[2]) } : null;
-  }).filter(Boolean);
-  const hash = /sha256\s+([0-9a-f]{64})/.exec(md);
-  return { grade: g ? num(g[1]) : null, gradeOf: g ? num(g[2]) : null, deductions,
-    failureModes: bullets(section(md, 'Failure modes and limits')), sha256: hash ? hash[1] : null };
+// REPORT.md: failure modes (bullets) and the recorded determinism hash of results_deep.json.
+export function parseReport(md) {
+  const hash = /results_deep\.json sha256 ([0-9a-f]{64})/.exec(md);
+  return { failureModes: bullets(section(md, 'Failure modes and limits')), sha256: hash ? hash[1] : null };
+}
+
+// README.md: the verdict's first clause and the "- Stage: STATUS date" lifecycle lines.
+export function parseReadme(md) {
+  const verdict = (/^\*\*Verdict\.\*\* ([^.]+)/m.exec(md) || [])[1] || null;
+  const lifecycle = [...section(md, 'Lifecycle').matchAll(/^- (\w+): (\w+)(?: (\d{4}-\d{2}-\d{2}))?$/gm)]
+    .map(([, stage, status, date]) => ({ stage, status, date: date || null }));
+  return { verdict, lifecycle };
 }
 
 export const countTests = (py) => (py.match(/^\s+def test_/gm) || []).length;

@@ -15,11 +15,10 @@ import sys
 import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEEP = os.path.join(ROOT, "level-3-deep")
-BUILD = os.path.join(ROOT, "level-2-build")
-LEARN = os.path.join(ROOT, "level-1-learn")
-sys.path.insert(0, DEEP)
-sys.path.insert(0, BUILD)
+SRC = os.path.join(ROOT, "src")
+EXP = os.path.join(ROOT, "experiments")
+RES = os.path.join(ROOT, "results")
+sys.path.insert(0, SRC)
 import run_build  # noqa: E402
 import run_deep as run_deep_module  # noqa: E402
 from detection_hardened import (  # noqa: E402
@@ -41,9 +40,9 @@ def load_json(path):
         return json.load(f)
 
 
-BASELINE = load_json(os.path.join(LEARN, "snapshot_after.json"))
-CURRENT = load_json(os.path.join(DEEP, "snapshot_current.json"))
-CONFIG = load_json(os.path.join(DEEP, "config.json"))
+BASELINE = load_json(os.path.join(EXP, "snapshot_after.json"))
+CURRENT = load_json(os.path.join(EXP, "snapshot_current.json"))
+CONFIG = load_json(os.path.join(EXP, "config.json"))
 
 
 def deep_result():
@@ -162,7 +161,7 @@ class TestDrift(unittest.TestCase):
         self.assertEqual(firings, [])
 
     def test_before_snapshot_drifts_on_all_controls(self):
-        before = load_json(os.path.join(LEARN, "snapshot_before.json"))
+        before = load_json(os.path.join(EXP, "snapshot_before.json"))
         _, summary = baseline_drift(
             BASELINE, before, "2026-11-05T10:52:00Z")
         self.assertEqual(summary["drift_count"], 10)

@@ -1,7 +1,7 @@
 """Threshold sweep and authored-intent sanity check for the Deep loop.
 
-Run: python level-3-deep/evaluate_deep.py
-Writes level-3-deep/results_eval.json. Two parts, both deterministic:
+Run: python src/evaluate_deep.py
+Writes results/results_eval.json. Two parts, both deterministic:
 
 1. Sweep: R1 firings, R1 alerts and total alerts (R1 to R5) for
    failed_login_threshold 1 to 10 and failed_login_window_seconds
@@ -17,8 +17,9 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+EXP = os.path.join(ROOT, "experiments")
+RES = os.path.join(ROOT, "results")
 sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(ROOT, "level-2-build"))
 import run_build  # noqa: E402
 from detection_hardened import (  # noqa: E402
     baseline_drift,
@@ -108,17 +109,17 @@ def evaluate(config, labels, baseline, current, sources):
 
 def main():
     result = evaluate(
-        load_json(os.path.join(HERE, "config.json")),
-        load_json(os.path.join(HERE, "authored_intent.json")),
-        load_json(os.path.join(ROOT, "level-1-learn", "snapshot_after.json")),
-        load_json(os.path.join(HERE, "snapshot_current.json")),
+        load_json(os.path.join(EXP, "config.json")),
+        load_json(os.path.join(EXP, "authored_intent.json")),
+        load_json(os.path.join(EXP, "snapshot_after.json")),
+        load_json(os.path.join(EXP, "snapshot_current.json")),
         run_build.load_sources())
     for row in result["sweep"]:
         if row["failed_login_window_seconds"] == 600:
             print(f"threshold {row['failed_login_threshold']}: R1 firings {row['r1_firings']}, "
                   f"alerts {row['alerts_total']}, precision {row['r1_precision']}, "
                   f"recall {row['r1_episode_recall']}")
-    path = os.path.join(HERE, "results_eval.json")
+    path = os.path.join(RES, "results_eval.json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, sort_keys=True)
         f.write("\n")

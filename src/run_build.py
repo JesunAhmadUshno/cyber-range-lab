@@ -1,9 +1,9 @@
 """Run the Build detection loop and write deterministic results.
 
-Run: python level-2-build/run_build.py
-Reads the four synthetic sample log files in level-2-build/sample_logs/,
+Run: python src/run_build.py
+Reads the four synthetic sample log files in experiments/sample_logs/,
 runs the defensive detection loop, and writes
-level-2-build/results_build.json. Central aggregation is held in the
+results/results_build.json. Central aggregation is held in the
 results structure (records list plus per-source totals); no
 central_log.jsonl file is generated, so no generated log churn is
 committed. No timestamps from the wall clock, no randomness, so two
@@ -14,6 +14,9 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+EXP = os.path.join(ROOT, "experiments")
+RES = os.path.join(ROOT, "results")
 sys.path.insert(0, HERE)
 from detection import run_detection  # noqa: E402
 
@@ -23,7 +26,7 @@ SOURCE_FILES = {"auth": "auth.log", "sudo": "sudo.log",
 
 def load_sources():
     sources = {}
-    log_dir = os.path.join(HERE, "sample_logs")
+    log_dir = os.path.join(EXP, "sample_logs")
     for source, name in SOURCE_FILES.items():
         with open(os.path.join(log_dir, name), encoding="utf-8") as f:
             sources[source] = f.read().splitlines()
@@ -42,7 +45,7 @@ def main():
     print(f"Alerts total {result['alerts_total_after_dedup']}, "
           f"incident {result['incident']['incident_id']} "
           f"opened {result['incident']['opened_at']}")
-    path = os.path.join(HERE, "results_build.json")
+    path = os.path.join(RES, "results_build.json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, sort_keys=True)
         f.write("\n")
