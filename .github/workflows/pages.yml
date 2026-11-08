@@ -1,10 +1,10 @@
 name: Pages
 
-# Builds the live dashboard in site/ from the committed level-*/ results, logs and snapshots and publishes it to GitHub Pages.
+# Builds the live dashboard in site/ from the committed results/, experiments/, README.md and REPORT.md and publishes it to GitHub Pages.
 on:
   push:
     branches: [main]
-    paths: ['site/**', 'level-*/**', 'tests/**', '.github/workflows/pages.yml']
+    paths: ['site/**', 'src/**', 'experiments/**', 'results/**', 'tests/**', 'README.md', 'REPORT.md', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:

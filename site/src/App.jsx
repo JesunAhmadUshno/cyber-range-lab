@@ -1,18 +1,19 @@
 import { useMemo, useState, useEffect, useId, useRef } from 'react';
-import learn from '../../level-1-learn/results_learn.json';
-import build from '../../level-2-build/results_build.json';
-import deep from '../../level-3-deep/results_deep.json';
-import evalRes from '../../level-3-deep/results_eval.json';
-import before from '../../level-1-learn/snapshot_before.json';
-import after from '../../level-1-learn/snapshot_after.json';
-import current from '../../level-3-deep/snapshot_current.json';
-import defaultConfig from '../../level-3-deep/config.json';
-import labels from '../../level-3-deep/authored_intent.json';
-import authLog from '../../level-2-build/sample_logs/auth.log?raw';
-import sudoLog from '../../level-2-build/sample_logs/sudo.log?raw';
-import serviceLog from '../../level-2-build/sample_logs/service.log?raw';
-import firewallLog from '../../level-2-build/sample_logs/firewall.log?raw';
-import deepReadme from '../../level-3-deep/README.md?raw';
+import learn from '../../results/results_learn.json';
+import build from '../../results/results_build.json';
+import deep from '../../results/results_deep.json';
+import evalRes from '../../results/results_eval.json';
+import before from '../../experiments/snapshot_before.json';
+import after from '../../experiments/snapshot_after.json';
+import current from '../../experiments/snapshot_current.json';
+import defaultConfig from '../../experiments/config.json';
+import labels from '../../experiments/authored_intent.json';
+import authLog from '../../experiments/sample_logs/auth.log?raw';
+import sudoLog from '../../experiments/sample_logs/sudo.log?raw';
+import serviceLog from '../../experiments/sample_logs/service.log?raw';
+import firewallLog from '../../experiments/sample_logs/firewall.log?raw';
+import reportMd from '../../REPORT.md?raw';
+import readmeMd from '../../README.md?raw';
 import tLearn from '../../tests/test_learn_hardening.py?raw';
 import tBuild from '../../tests/test_build_detection.py?raw';
 import tDeep from '../../tests/test_deep_hardened.py?raw';
@@ -24,7 +25,8 @@ const blob = (p) => `${REPO}/blob/main/${p}`;
 const tree = (p) => `${REPO}/tree/main/${p}`;
 const SOURCES = { auth: E.splitLines(authLog), sudo: E.splitLines(sudoLog), service: E.splitLines(serviceLog), firewall: E.splitLines(firewallLog) };
 const SOURCE_FILE = { auth: 'auth.log', sudo: 'sudo.log', service: 'service.log', firewall: 'firewall.log' };
-const README = E.parseDeepReadme(deepReadme);
+const REPORT = E.parseReport(reportMd);
+const README = E.parseReadme(readmeMd);
 const TESTS = { Learn: E.countTests(tLearn), Build: E.countTests(tBuild), Deep: E.countTests(tDeep) + E.countTests(tEval) };
 const RULES = { R1: 'repeated_failed_logins', R2: 'sudo_by_non_admin_user', R3: 'new_listening_port_not_in_baseline', R4: 'automatic_updates_disabled', R5: 'baseline_drift' };
 const sevColor = (s) => (s === 'high' ? 'var(--bad)' : 'var(--warn)');
@@ -57,9 +59,9 @@ function MenuBar() {
     <div className="menubar" role="banner">
       <span className="apple" aria-hidden="true">◆</span>
       <a className="app" href="#top">Cyber Range Lab</a>
-      <a className="m" href={blob('level-3-deep/RUNBOOK.md')}>Runbook</a>
-      <a className="m" href={blob('level-3-deep/README.md')}>Deep write-up</a>
-      <a className="m" href={blob('docs/research-review.md')}>Research review</a>
+      <a className="m" href={blob('docs/RUNBOOK.md')}>Runbook</a>
+      <a className="m" href={blob('REPORT.md')}>Report</a>
+      <a className="m" href={blob('PROPOSAL.md')}>Proposal</a>
       <span className="spacer" />
       <span className="status"><i /> Synthetic data · defensive only</span>
       <a href={REPO}>GitHub ↗</a>
@@ -130,7 +132,7 @@ export default function App() {
       <Dock />
       <footer>
         Synthetic teaching data, defensive scope only: no live machine was read, changed or scanned. Code: Apache-2.0.
-        Every number on this page is read from <code>level-*/</code> results, snapshots, logs and write-ups at build time, or computed in your browser by a port of the Python that a known-answer check holds to the committed results.
+        Every number on this page is read from the repo's <code>results/</code>, <code>experiments/</code>, README and REPORT at build time, or computed in your browser by a port of the Python that a known-answer check holds to the committed results.
         {' '}<a href={REPO} style={{ color: '#e9e4da' }}>Repository</a> · <a href={`${REPO}/releases`} style={{ color: '#e9e4da' }}>Releases</a>
       </footer>
     </div>
@@ -142,7 +144,7 @@ function Hero() {
   return (
     <header className="card hero window" id="top" data-title="range.app — README">
       <div className="head">
-        <p className="eyebrow">Defensive cyber range · Learn, Build, Deep</p>
+        <p className="eyebrow">Defensive cyber range · verdict: {README.verdict}</p>
         <span className="pill warn" title={deep.scenario}>● Synthetic teaching data · defensive scope only</span>
       </div>
       <h1>{t.lines} synthetic log lines become {deep.firings_total_before_dedup} rule firings, {deep.alerts_total_after_dedup} alerts and <em>a closed incident</em>.</h1>
@@ -154,7 +156,7 @@ function Hero() {
       <div className="actions">
         <a className="btn primary" href="#detect">Open the detection playground</a>
         <a className="btn ghost" href="#harden">Edit the VM snapshot</a>
-        <span className="hint">Reproduce with <code>python level-3-deep/run_deep.py</code></span>
+        <span className="hint">Reproduce with <code>python src/run_deep.py</code></span>
       </div>
       <div className="tiles">
         <div className="tile"><div className="num">{s.before_passed} → {s.after_passed}</div><div className="cap">Hardening controls passed, before and after, of {s.controls_total}</div></div>
@@ -204,7 +206,7 @@ function Hardening({ snap, setSnap, preset, loadPreset }) {
           <p className="eyebrow">Level 1 · Learn · live checker</p>
           <h2>{E.CONTROLS.length} controls, checked as you <em>edit the snapshot</em>.</h2>
           <p className="sub">
-            Load one of the repo's three synthetic snapshots of <span className="mono">lab-vm-01</span>, then change any field. The checker reads configuration fields only, exactly like <a href={blob('level-1-learn/hardening.py')}>hardening.py</a>; it never touches a machine.
+            Load one of the repo's three synthetic snapshots of <span className="mono">lab-vm-01</span>, then change any field. The checker reads configuration fields only, exactly like <a href={blob('src/hardening.py')}>hardening.py</a>; it never touches a machine.
             Your edited snapshot also feeds the drift and detection windows below.
           </p>
         </div>
@@ -298,7 +300,7 @@ function Ingest({ live }) {
           <p className="eyebrow">Level 2 · Build · ingest</p>
           <h2>Every raw line, parsed or <em>quarantined</em>.</h2>
           <p className="sub">
-            The four synthetic log files from <a href={tree('level-2-build/sample_logs')}>level-2-build/sample_logs/</a>, bundled as text and parsed in your browser with the same regular expressions as <a href={blob('level-2-build/detection.py')}>detection.py</a>.
+            The four synthetic log files from <a href={tree('experiments/sample_logs')}>experiments/sample_logs/</a>, bundled as text and parsed in your browser with the same regular expressions as <a href={blob('src/detection.py')}>detection.py</a>.
             A line that matches no format for its source is counted and set aside, never a crash. Triangles on the timeline are the rule firings for the current playground settings.
           </p>
         </div>
@@ -346,7 +348,7 @@ function Detection({ live, cfg, setCfg, perControl, setPerControl, snap }) {
           <h2>Tune the rules and watch firings <em>collapse into alerts</em>.</h2>
           <p className="sub">
             Rules R1 to R4 run over the parsed records from the logs, R5 from the drift between the hardened baseline and the snapshot you edited above.
-            Firings that share a rule, host and user inside the dedup window become one alert. Defaults come from <a href={blob('level-3-deep/config.json')}>config.json</a>.
+            Firings that share a rule, host and user inside the dedup window become one alert. Defaults come from <a href={blob('experiments/config.json')}>config.json</a>.
           </p>
         </div>
         {isDefault
@@ -431,7 +433,7 @@ function Sweep({ cfg, snap }) {
           <h2>Only thresholds {SEPARATING.join(' and ')} <em>separate</em> the burst from the near miss.</h2>
           <p className="sub">
             R1 rerun for every threshold from 1 to 10 at the chosen window. At the default {deep.config.failed_login_window_seconds} second window, lower thresholds also fire on bob's near miss and higher ones miss alice's burst (recorded in results_eval.json).
-            The run uses your playground settings for everything except threshold and window. Its recorded twin is <a href={blob('level-3-deep/results_eval.json')}>results_eval.json</a>, written by <a href={blob('level-3-deep/evaluate_deep.py')}>evaluate_deep.py</a>.
+            The run uses your playground settings for everything except threshold and window. Its recorded twin is <a href={blob('results/results_eval.json')}>results_eval.json</a>, written by <a href={blob('src/evaluate_deep.py')}>evaluate_deep.py</a>.
           </p>
         </div>
         <Match ok={matches} yes={`All ${evalRes.sweep.length} cells match results_eval.json`} no="Differs from results_eval.json (custom settings)" />
@@ -583,7 +585,7 @@ function Incident({ live }) {
               <h3>Recorded walkthrough · results_deep.json</h3>
               <button className="btn ghost" onClick={runReplay}>Replay recorded</button>
             </div>
-            <p className="hint" style={{ margin: '0 0 12px' }}>A replay, not a live run: fixed review times from <a href={blob('level-3-deep/run_deep.py')}>run_deep.py</a>, not a real incident on a live host.</p>
+            <p className="hint" style={{ margin: '0 0 12px' }}>A replay, not a live run: fixed review times from <a href={blob('src/run_deep.py')}>run_deep.py</a>, not a real incident on a live host.</p>
             <ol className="log recorded">
               {rec.map((t, i) => (
                 <li key={i}><span className="mono">{t.at.slice(11, 16)}</span> <b>{t.from ?? '∅'} → {t.to}</b> <span className="hint">· {t.actor}</span><div className="hint">{t.note}</div></li>
@@ -607,36 +609,30 @@ function Limits() {
     ['R5', 'unmapped (configuration drift)', 'hardening control regressed'],
   ];
   const docs = [
-    ['level-1-learn/README.md', 'Learn', 'Hardening checker'], ['level-2-build/README.md', 'Build', 'Detection loop'], ['level-3-deep/README.md', 'Deep', 'Hardened loop, grade'],
-    ['level-3-deep/RUNBOOK.md', 'Runbook', 'Isolation, reset, teardown'], ['docs/research-review.md', 'Research review', 'Rubric, gaps, next data'], ['NOVELTY.md', 'Novelty', 'Draft, not claimed'],
+    ['README.md', 'Abstract', 'Question, verdict, reproduce'], ['PROPOSAL.md', 'Proposal', 'Not locked; original specs'], ['REPORT.md', 'Report', 'Method, results, review, threats'],
+    ['docs/RUNBOOK.md', 'Runbook', 'Isolation, reset, teardown'], ['docs/decisions/', 'Decisions', 'Hard-to-reverse choices'], ['CHANGELOG.md', 'Changelog', 'Releases and changes'],
   ];
   return (
     <section id="limits" className="card window reveal" data-title="README.md — method and limits">
       <p className="eyebrow">Method and limits</p>
       <h2>What these numbers <em>can't</em> tell you.</h2>
       <p className="sub">
-        Quoted from <a href={blob('level-3-deep/README.md')}>level-3-deep/README.md</a> at build time. The biggest one first: there is no ground truth. The logs were written by the same hand as the rules, so every count above shows the rules behave as designed, not that they detect anything in the wild.
+        Quoted from <a href={blob('REPORT.md')}>REPORT.md</a> at build time. The biggest one first: there is no ground truth. The logs were written by the same hand as the rules, so every count above shows the rules behave as designed, not that they detect anything in the wild.
       </p>
       <div className="grid2" style={{ marginTop: 16 }}>
         <div>
           <h3>Failure modes</h3>
-          <ul className="details">{README.failureModes.map((f, i) => <li key={i}>{f}</li>)}</ul>
+          <ul className="details">{REPORT.failureModes.map((f, i) => <li key={i}>{f}</li>)}</ul>
         </div>
         <div>
-          <h3>Self-assessed grade: {README.grade.toLocaleString('en-US')} of {README.gradeOf.toLocaleString('en-US')}</h3>
-          <div className="bars" style={{ marginTop: 12 }}>
-            {README.deductions.map((x) => (
-              <div className="bar-row" key={x.what}>
-                <div className="lab"><span>{x.what}</span><b>−{x.minus}</b></div>
-                <div className="track"><div className="fill" style={{ width: `${(x.minus / README.deductions[0].minus) * 100}%`, background: 'var(--bad)' }} /></div>
-              </div>
-            ))}
-          </div>
+          <h3>Lifecycle · verdict: {README.verdict}</h3>
+          <ul className="details">{README.lifecycle.map((s) => <li key={s.stage}><b>{s.stage}</b>: {s.status}{s.date ? ` ${s.date}` : ''}</li>)}</ul>
+          <p className="hint">Stages and verdict are read from README.md at build time. No verdict here depends on running any scenario.</p>
           <div className="tiles" style={{ gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }}>
             {Object.entries(TESTS).map(([k, v]) => <div className="tile" key={k}><div className="num">{v}</div><div className="cap">{k} tests</div></div>)}
             <div className="tile"><div className="num">{total}</div><div className="cap">unit tests</div></div>
           </div>
-          <p className="hint">Test counts are read from <span className="mono">tests/*.py</span> at build time. Determinism: two runs of run_deep.py hash to <span className="mono">{README.sha256.slice(0, 12)}…</span></p>
+          <p className="hint">Test counts are read from <span className="mono">tests/*.py</span> at build time. Determinism: two runs of run_deep.py hash to <span className="mono">{REPORT.sha256.slice(0, 12)}…</span></p>
         </div>
       </div>
       <h3 style={{ marginTop: 20 }}>Candidate ATT&amp;CK mapping (detection-side labels, not validated)</h3>

@@ -1,9 +1,9 @@
 """Run the Learn hardening check and write deterministic results.
 
-Run: python level-1-learn/run_learn.py
+Run: python src/run_learn.py
 Reads snapshot_before.json and snapshot_after.json (both synthetic
-teaching data in this folder), evaluates both against the 10-control
-checklist, and writes level-1-learn/results_learn.json. No timestamps,
+teaching data in experiments/), evaluates both against the 10-control
+checklist, and writes results/results_learn.json. No timestamps,
 no randomness, so two runs produce an identical file.
 """
 import json
@@ -11,12 +11,15 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+EXP = os.path.join(ROOT, "experiments")
+RES = os.path.join(ROOT, "results")
 sys.path.insert(0, HERE)
 from hardening import compare_snapshots  # noqa: E402
 
 
 def load(name):
-    with open(os.path.join(HERE, name), encoding="utf-8") as f:
+    with open(os.path.join(EXP, name), encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -38,7 +41,7 @@ def main():
                        "10 controls, defensive scope only",
            "before": result["before"], "after": result["after"],
            "summary": s}
-    path = os.path.join(HERE, "results_learn.json")
+    path = os.path.join(RES, "results_learn.json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(out, f, indent=2, sort_keys=True)
         f.write("\n")

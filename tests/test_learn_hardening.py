@@ -2,7 +2,7 @@
 
 The after snapshot passes all 10 controls and the before snapshot
 passes 0 of 10, by construction of the two synthetic snapshots in
-level-1-learn/. Every expected count below is computed from those
+experiments/. Every expected count below is computed from those
 files by hand, not copied from the code output.
 """
 import copy
@@ -12,8 +12,7 @@ import sys
 import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LEVEL = os.path.join(ROOT, "level-1-learn")
-sys.path.insert(0, LEVEL)
+sys.path.insert(0, os.path.join(ROOT, "src"))
 from hardening import (  # noqa: E402
     CONTROLS,
     HardeningError,
@@ -23,7 +22,7 @@ from hardening import (  # noqa: E402
 
 
 def load(name):
-    with open(os.path.join(LEVEL, name), encoding="utf-8") as f:
+    with open(os.path.join(ROOT, "experiments", name), encoding="utf-8") as f:
         return json.load(f)
 
 

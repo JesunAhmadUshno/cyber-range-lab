@@ -25,8 +25,7 @@ and no live capture is claimed. Scenario content is held and is
 not part of this project page.
 
 Status: v1.0, 2026-11-05. Learn, Build, and compressed Deep are
-done. Total tests: 71, all passing at v1.0. Level grades: Learn
-8,500 of 10,000, Build 8,300 of 10,000, Deep 8,400 of 10,000.
+done. Total tests: 71, all passing at v1.0.
 
 ## Results
 

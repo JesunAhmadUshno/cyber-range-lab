@@ -1,7 +1,7 @@
 """Unit tests for Level 2 Build defensive detection. Hand-computed.
 
 Fixture expectations are computed from the synthetic sample logs in
-level-2-build/sample_logs/ by hand: 26 lines, 24 parsed, 2 quarantined;
+experiments/sample_logs/ by hand: 26 lines, 24 parsed, 2 quarantined;
 firings R1 2, R2 2, R3 1, R4 2 (7 total); 4 alerts after dedup; one
 incident INC-001 opened at the first high severity firing time.
 """
@@ -11,7 +11,10 @@ import sys
 import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LEVEL = os.path.join(ROOT, "level-2-build")
+SRC = os.path.join(ROOT, "src")
+EXP = os.path.join(ROOT, "experiments")
+RES = os.path.join(ROOT, "results")
+LEVEL = SRC
 sys.path.insert(0, LEVEL)
 from detection import (  # noqa: E402
     BASELINE_PORTS,
@@ -127,7 +130,7 @@ class TestSampleLogs(unittest.TestCase):
                          json.dumps(again, sort_keys=True))
 
     def test_results_file_matches_runner(self):
-        with open(os.path.join(LEVEL, "results_build.json"),
+        with open(os.path.join(RES, "results_build.json"),
                   encoding="utf-8") as f:
             on_disk = json.load(f)
         self.assertEqual(on_disk["firings_total_before_dedup"], 7)

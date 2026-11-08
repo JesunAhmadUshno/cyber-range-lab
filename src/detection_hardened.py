@@ -27,7 +27,6 @@ import os
 from datetime import timedelta
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)
 
 
 def _load_module(name, path):
@@ -39,10 +38,10 @@ def _load_module(name, path):
 
 build_detection = _load_module(
     "p24_build_detection",
-    os.path.join(ROOT, "level-2-build", "detection.py"))
+    os.path.join(HERE, "detection.py"))
 learn_hardening = _load_module(
     "p24_learn_hardening",
-    os.path.join(ROOT, "level-1-learn", "hardening.py"))
+    os.path.join(HERE, "hardening.py"))
 
 parse_ts = build_detection.parse_ts
 ingest = build_detection.ingest

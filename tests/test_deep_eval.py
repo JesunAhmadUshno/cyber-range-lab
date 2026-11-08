@@ -5,9 +5,10 @@ import sys
 import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEEP = os.path.join(ROOT, "level-3-deep")
-sys.path.insert(0, DEEP)
-sys.path.insert(0, os.path.join(ROOT, "level-2-build"))
+SRC = os.path.join(ROOT, "src")
+EXP = os.path.join(ROOT, "experiments")
+RES = os.path.join(ROOT, "results")
+sys.path.insert(0, SRC)
 import evaluate_deep  # noqa: E402
 import run_build  # noqa: E402
 
@@ -19,10 +20,10 @@ def load_json(path):
 
 def fresh():
     return evaluate_deep.evaluate(
-        load_json(os.path.join(DEEP, "config.json")),
-        load_json(os.path.join(DEEP, "authored_intent.json")),
-        load_json(os.path.join(ROOT, "level-1-learn", "snapshot_after.json")),
-        load_json(os.path.join(DEEP, "snapshot_current.json")),
+        load_json(os.path.join(EXP, "config.json")),
+        load_json(os.path.join(EXP, "authored_intent.json")),
+        load_json(os.path.join(EXP, "snapshot_after.json")),
+        load_json(os.path.join(EXP, "snapshot_current.json")),
         run_build.load_sources())
 
 
@@ -33,10 +34,10 @@ def row(result, threshold, window=600):
 
 class TestEval(unittest.TestCase):
     def test_committed_file_matches_a_fresh_run(self):
-        self.assertEqual(load_json(os.path.join(DEEP, "results_eval.json")), fresh())
+        self.assertEqual(load_json(os.path.join(RES, "results_eval.json")), fresh())
 
     def test_sweep_anchors_match_recorded_deep_results(self):
-        result, deep = fresh(), load_json(os.path.join(DEEP, "results_deep.json"))
+        result, deep = fresh(), load_json(os.path.join(RES, "results_deep.json"))
         self.assertEqual(row(result, 5)["r1_firings"], deep["per_rule"]["R1"]["firings_before_dedup"])
         self.assertEqual(row(result, 5)["alerts_total"], deep["alerts_total_after_dedup"])
         self.assertEqual(row(result, 3)["r1_firings"], deep["threshold_check_threshold_3"]["r1_firings"])
@@ -52,7 +53,7 @@ class TestEval(unittest.TestCase):
         self.assertEqual(r["r1_episode_recall"], 0.0)
 
     def test_labels_cover_every_non_blank_line(self):
-        labels = load_json(os.path.join(DEEP, "authored_intent.json"))
+        labels = load_json(os.path.join(EXP, "authored_intent.json"))
         for source, lines in run_build.load_sources().items():
             self.assertEqual(len(labels["lines"][source]), len([x for x in lines if x.strip()]), source)
 

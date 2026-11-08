@@ -1,12 +1,12 @@
 """Run the Deep hardened detection loop and write deterministic results.
 
-Run: python level-3-deep/run_deep.py
-Reads the Build synthetic sample logs, level-3-deep/config.json,
+Run: python src/run_deep.py
+Reads the Build synthetic sample logs, experiments/config.json,
 the Learn after snapshot (the hardened baseline), and
-level-3-deep/snapshot_current.json. Runs the hardened loop, walks
+experiments/snapshot_current.json. Runs the hardened loop, walks
 the incident through its full lifecycle using recorded review
 timestamps (not the wall clock), and writes
-level-3-deep/results_deep.json. No wall clock, no randomness, so
+results/results_deep.json. No wall clock, no randomness, so
 two runs produce an identical file.
 """
 import json
@@ -15,12 +15,11 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+EXP = os.path.join(ROOT, "experiments")
+RES = os.path.join(ROOT, "results")
 sys.path.insert(0, HERE)
-from detection_hardened import run_deep, transition  # noqa: E402
-
-BUILD_DIR = os.path.join(ROOT, "level-2-build")
-sys.path.insert(0, BUILD_DIR)
 import run_build  # noqa: E402
+from detection_hardened import run_deep, transition  # noqa: E402
 
 # Recorded review times for the lifecycle walkthrough. These are
 # fixed synthetic review timestamps for this teaching run, stated
@@ -45,11 +44,11 @@ def load_json(path):
 
 
 def main():
-    with open(os.path.join(HERE, "config.json"), encoding="utf-8") as f:
+    with open(os.path.join(EXP, "config.json"), encoding="utf-8") as f:
         config = json.load(f)
     baseline = load_json(os.path.join(
-        ROOT, "level-1-learn", "snapshot_after.json"))
-    current = load_json(os.path.join(HERE, "snapshot_current.json"))
+        EXP, "snapshot_after.json"))
+    current = load_json(os.path.join(EXP, "snapshot_current.json"))
     result = run_deep(run_build.load_sources(), config, baseline, current)
     incident = result["incident"]
     for to_state, at_ts, actor, note in REVIEW_STEPS:
@@ -69,7 +68,7 @@ def main():
     print(f"Alerts total {result['alerts_total_after_dedup']}, "
           f"incident {incident['incident_id']} "
           f"lifecycle {incident['lifecycle']}")
-    path = os.path.join(HERE, "results_deep.json")
+    path = os.path.join(RES, "results_deep.json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, sort_keys=True)
         f.write("\n")

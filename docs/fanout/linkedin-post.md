@@ -20,13 +20,13 @@ claimed. Defensive scope only throughout.
 Learn: a 10-control hardening checklist (C01 to C10) over two
 synthetic lab VM snapshots. Before: 0 of 10 passed, 0 percent.
 After: 10 of 10 passed, 100 percent. Improvement: plus 10
-controls. 22 tests. Grade 8,500 of 10,000.
+controls. 22 tests.
 
 Build: a detection loop on 26 synthetic log lines from 4
 sources (auth, sudo, service, firewall). 24 parsed, 2
 quarantined, 7 rule firings before deduplication collapsed to
 4 alerts. One incident, INC-001, opened 2026-11-05T10:08:00Z at
-high severity. 48 tests in total. Grade 8,300 of 10,000.
+high severity. 48 tests in total.
 
 Deep (compressed): policy moved into a validated config file,
 one new rule (R5 baseline drift, reusing the Learn checker),
@@ -34,8 +34,7 @@ and an incident lifecycle with a closure checklist, plus the
 range runbook. 9 firings to 5 alerts. Drift on 2 controls, C01
 and C07: baseline 10 of 10, current snapshot 8 of 10. Incident
 closed with 4 logged transitions and 4 of 4 checklist items.
-71 tests in total. Grade 8,400 of 10,000, with deductions named
-in the repo.
+71 tests in total, with the limits named in the repo.
 
 The honest limits, in the post and not in a footnote: synthetic
 snapshots and logs only; hardening and drift read configuration
