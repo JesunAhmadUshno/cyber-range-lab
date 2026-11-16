@@ -118,7 +118,7 @@ export default function App() {
   }, [cfg, snap, perControl]);
   const loadPreset = (name) => { setSnap(clone({ before, after, current }[name])); setPreset((p) => ({ name, n: p.n + 1 })); };
   return (
-    <div className="wrap">
+    <div className="wrap"><a className="skip" href="#top">Skip to content</a>
       <MenuBar />
       <div className="glow" aria-hidden="true" />
       <Hero />
@@ -134,7 +134,7 @@ export default function App() {
         Synthetic teaching data, defensive scope only: no live machine was read, changed or scanned. Code: Apache-2.0.
         Every number on this page is read from the repo's <code>results/</code>, <code>experiments/</code>, README and REPORT at build time, or computed in your browser by a port of the Python that a known-answer check holds to the committed results.
         {' '}<a href={REPO} style={{ color: '#e9e4da' }}>Repository</a> · <a href={`${REPO}/releases`} style={{ color: '#e9e4da' }}>Releases</a>
-      </footer>
+      <nav className="support" aria-label="Support this work"><a href="https://github.com/sponsors/JesunAhmadUshno">Sponsor this work</a><a href="https://github.com/sponsors/JesunAhmadUshno">Donate</a><a href="https://buymeacoffee.com/jesun">Buy Me a Coffee</a><a href="https://calendly.com/jesunahmadushno/30min">Work with me</a></nav></footer>
     </div>
   );
 }
@@ -142,7 +142,7 @@ export default function App() {
 function Hero() {
   const t = deep.sources.total, s = learn.summary, d = deep.baseline_drift;
   return (
-    <header className="card hero window" id="top" data-title="range.app — README">
+    <header className="card hero window" id="top" data-title="range.app - README">
       <div className="head">
         <p className="eyebrow">Defensive cyber range · verdict: {README.verdict}</p>
         <span className="pill warn" title={deep.scenario}>● Synthetic teaching data · defensive scope only</span>
@@ -200,7 +200,7 @@ function Hardening({ snap, setSnap, preset, loadPreset }) {
     && E.evaluateSnapshot(current).passed === deep.baseline_drift.current_passed;
   const k = preset.n;
   return (
-    <section id="harden" className="card window reveal" data-title={`hardening.py — ${E.CONTROLS.length} controls, live`}>
+    <section id="harden" className="card window reveal" data-title={`hardening.py - ${E.CONTROLS.length} controls, live`}>
       <div className="head">
         <div>
           <p className="eyebrow">Level 1 · Learn · live checker</p>
@@ -294,7 +294,7 @@ function Ingest({ live }) {
   const lines = SOURCES[src].filter((l) => l.trim());
   const stats = live.ok ? live.sources : deep.sources;
   return (
-    <section id="ingest" className="card window reveal" data-title="sample_logs/ — 4 sources, parsed live">
+    <section id="ingest" className="card window reveal" data-title="sample_logs/ - 4 sources, parsed live">
       <div className="head">
         <div>
           <p className="eyebrow">Level 2 · Build · ingest</p>
@@ -341,7 +341,7 @@ function Detection({ live, cfg, setCfg, perControl, setPerControl, snap }) {
   const ok = live.ok && same(live.alerts, deep.alerts) && live.firings_total_before_dedup === deep.firings_total_before_dedup;
   const maxBar = live.ok ? Math.max(4, ...Object.values(live.per_rule).map((r) => r.firings_before_dedup)) : 4;
   return (
-    <section id="detect" className="card window reveal" data-title="detection_hardened.py — config.json playground">
+    <section id="detect" className="card window reveal" data-title="detection_hardened.py - config.json playground">
       <div className="head">
         <div>
           <p className="eyebrow">Level 3 · Deep · detection loop</p>
@@ -416,7 +416,7 @@ function Sweep({ cfg, snap }) {
       return E.sweep(SOURCES, cfg, labels, drift, evalRes.thresholds, evalRes.windows_seconds);
     } catch { return null; }
   }, [cfg, snap]);
-  if (!rows) return <section id="sweep" className="card window reveal" data-title="threshold_sweep — results_eval.json"><p className="err">The sweep needs a valid config and snapshot.</p></section>;
+  if (!rows) return <section id="sweep" className="card window reveal" data-title="threshold_sweep - results_eval.json"><p className="err">The sweep needs a valid config and snapshot.</p></section>;
   const matches = same(rows, evalRes.sweep);
   const sel = rows.filter((r) => r.failed_login_window_seconds === win);
   const W = 960, H = 260, pad = { l: 40, r: 20, t: 18, b: 34 };
@@ -426,7 +426,7 @@ function Sweep({ cfg, snap }) {
   const recorded = win === deep.config.failed_login_window_seconds
     ? [[deep.config.failed_login_threshold, deep.per_rule.R1.firings_before_dedup], [3, deep.threshold_check_threshold_3.r1_firings]] : [];
   return (
-    <section id="sweep" className="card window reveal" data-title="threshold_sweep — results_eval.json">
+    <section id="sweep" className="card window reveal" data-title="threshold_sweep - results_eval.json">
       <div className="head">
         <div>
           <p className="eyebrow">Sensitivity · computed live</p>
@@ -476,11 +476,11 @@ function Drift({ snap, cfg }) {
     const c = E.validateConfig(cfg);
     data = { base, cur, d, v1: E.deduplicate(d.firings, c, { perControl: false }), fixed: E.deduplicate(d.firings, c) };
   } catch (e) { err = e.message; }
-  if (err) return <section id="drift" className="card window reveal" data-title="R5 baseline_drift — snapshot diff"><p className="err" role="alert">{err}</p></section>;
+  if (err) return <section id="drift" className="card window reveal" data-title="R5 baseline_drift - snapshot diff"><p className="err" role="alert">{err}</p></section>;
   const { base, cur, d, v1, fixed } = data;
   const isRecorded = same(snap, current);
   return (
-    <section id="drift" className="card window reveal" data-title="R5 baseline_drift — snapshot_after.json vs current">
+    <section id="drift" className="card window reveal" data-title="R5 baseline_drift - snapshot_after.json vs current">
       <div className="head">
         <div>
           <p className="eyebrow">R5 · baseline drift</p>
@@ -551,7 +551,7 @@ function Incident({ live }) {
   };
   const rec = deep.incident.transitions.slice(0, replay);
   return (
-    <section id="incident" className="card window reveal" data-title={`${deep.incident.incident_id}.json — lifecycle`}>
+    <section id="incident" className="card window reveal" data-title={`${deep.incident.incident_id}.json - lifecycle`}>
       <div className="head">
         <div>
           <p className="eyebrow">Incident lifecycle · state machine</p>
@@ -613,7 +613,7 @@ function Limits() {
     ['docs/RUNBOOK.md', 'Runbook', 'Isolation, reset, teardown'], ['docs/decisions/', 'Decisions', 'Hard-to-reverse choices'], ['CHANGELOG.md', 'Changelog', 'Releases and changes'],
   ];
   return (
-    <section id="limits" className="card window reveal" data-title="README.md — method and limits">
+    <section id="limits" className="card window reveal" data-title="README.md - method and limits">
       <p className="eyebrow">Method and limits</p>
       <h2>What these numbers <em>can't</em> tell you.</h2>
       <p className="sub">
